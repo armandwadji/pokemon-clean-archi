@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./packages",
+    "target": "es5",
+    "module": "commonjs",
+    "lib": [
+      "ES2020",
+      "dom"
+    ],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "paths": {
+      "@pokemon/domain": [
+        "domain/src"
+      ],
+      "@pokemon/web-adapters": [
+        "adapters/src"
+      ]
+    }
+  }
+}

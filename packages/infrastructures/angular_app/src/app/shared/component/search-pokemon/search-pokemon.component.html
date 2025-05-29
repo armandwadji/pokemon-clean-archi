@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col s12 m6 offset-m3">
+    <div class="card">
+      <div class="card-content input-field">
+        <input
+          type="text"
+          id="search-input"
+          [(ngModel)]="searchTerms"
+          placeholder="Rechercher un pokémon"
+        />
+        <div class="collection">
+          @for (pokemon of pokemons(); track pokemon.id) {
+            <a
+              class="collection-item"
+              (click)="goToDetail(pokemon)"
+              (keydown)="goToDetail(pokemon)"
+              tabindex="0"
+            >
+              {{ pokemon.name }}
+            </a>
+          } @empty {
+            @if (pokemons() !== undefined) {
+              <a class="collection-item">No result match</a>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

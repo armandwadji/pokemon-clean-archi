@@ -1,0 +1,28 @@
+{
+  "name": "@pokemon/web-adapters",
+  "author": "Armand WADJI",
+  "homepage": "https://github.com/armandwadji/pokemon-clean-archi",
+  "license": "ISC",
+  "version": "1.0.0",
+  "description": "Adapters of pokemon clean architecture",
+  "main": "dist/adapters/src/index.js",
+  "types": "dist/adapters/src/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "prepublish": "tsc"
+  },
+  "dependencies": {
+    "@pokemon/domain": "1.0.0",
+    "builder-pattern": "^2.2.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.3.4",
+    "typescript": "^5.8.3"
+  }
+}

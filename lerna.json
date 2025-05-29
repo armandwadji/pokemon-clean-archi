@@ -1,0 +1,8 @@
+{
+  "packages": [
+    "packages/*",
+    "packages/adapters/*",
+    "packages/infrastructures/*"
+  ],
+  "version": "1.0.0"
+}
