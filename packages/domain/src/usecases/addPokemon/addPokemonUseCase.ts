@@ -21,14 +21,14 @@ export class AddPokemonUseCase extends AbstractAddEditUseCase<InputAddPokemonVal
         const errors: Map<NewPokemonFields, string> = await this.validate(inputAddPokemonValues.pokemonRequest);
 
         if (!errors.size) {
-            const pokemon = {
-                hp: inputAddPokemonValues.pokemonRequest.hp,
-                cp: inputAddPokemonValues.pokemonRequest.cp,
-                name: inputAddPokemonValues.pokemonRequest.name,
-                picture: inputAddPokemonValues.pokemonRequest.picture,
-                types: inputAddPokemonValues.pokemonRequest.types || ['Normal'],
-                created: inputAddPokemonValues.pokemonRequest.created || new Date(),
-            } as PokemonRequest;
+            const pokemon: PokemonRequest = Builder<PokemonRequest>()
+                .hp(inputAddPokemonValues.pokemonRequest.hp)
+                .cp(inputAddPokemonValues.pokemonRequest.cp)
+                .name(inputAddPokemonValues.pokemonRequest.name)
+                .picture(inputAddPokemonValues.pokemonRequest.picture)
+                .types(inputAddPokemonValues.pokemonRequest.types)
+                .created(new Date())
+                .build();
 
             const addedPokemon: Pokemon = await this.pokemonDataProvider.addPokemon(pokemon);
             return Promise.resolve(Builder<OutputAddPokemonValues>().pokemon(addedPokemon).build());
