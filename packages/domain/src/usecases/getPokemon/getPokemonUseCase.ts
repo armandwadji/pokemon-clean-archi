@@ -1,10 +1,20 @@
-import {PokemonRepository} from "../../ports/repositories/PokemonRepository";
+import {IPokemonDataProviderBoundary} from "../../ports/dataprovider/IPokemonDataProviderBoundary";
+import {UseCase} from "../UseCase";
+import {
+    IGetPokemonEntryPointBoundary,
+    InputGetPokemonValues,
+    OutputGetPokemonValues
+} from "../../ports/boundary/IGetPokemonEntryPointBoundary";
 import {Pokemon} from "../../entities/Pokemon";
+import {Builder} from "builder-pattern";
 
-export class GetPokemonUseCase{
-    constructor(private pokemonRepository: PokemonRepository) {}
+export class GetPokemonUseCase extends UseCase<InputGetPokemonValues, OutputGetPokemonValues> implements IGetPokemonEntryPointBoundary{
+    constructor(private pokemonRepository: IPokemonDataProviderBoundary) {
+        super()
+    }
 
-    async execute(pokemonId: string): Promise<Pokemon> {
-        return this.pokemonRepository.getPokemon(pokemonId)
+    override async execute(inputPokemonValues: InputGetPokemonValues): Promise<OutputGetPokemonValues> {
+        return this.pokemonRepository.getPokemon(inputPokemonValues.pokemonId)
+            .then((pokemon: Pokemon)=> Builder<OutputGetPokemonValues>().pokemon(pokemon).build());
     }
 }

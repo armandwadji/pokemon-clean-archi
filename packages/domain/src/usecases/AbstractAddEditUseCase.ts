@@ -1,8 +1,11 @@
 import {NewPokemonFields, PokemonRequest} from "@pokemon/domain";
+import {InputValues, OutputValues} from "./IUseCase";
+import {UseCase} from "./UseCase";
 
-export abstract class AbstractAddEditUseCase {
+export abstract class AbstractAddEditUseCase<I extends InputValues, O extends OutputValues> extends UseCase<I, O>{
 
     protected constructor() {
+        super()
     }
 
     validate(pokemonRequest: PokemonRequest) : Promise<Map<NewPokemonFields, string>>  {

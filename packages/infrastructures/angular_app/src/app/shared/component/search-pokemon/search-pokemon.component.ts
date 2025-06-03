@@ -16,7 +16,6 @@ import {GetPokemonsController, PokemonsPresenterVM} from '@pokemon/web-adapters'
 export class SearchPokemonComponent {
   private readonly router: Router = inject(Router);
   private readonly controller: GetPokemonsController = inject(GetPokemonsController);
-  // pokemonService: IPokemonService = inject(IPokemonDataProviderToken);
 
   searchTerms: WritableSignal<string> = signal('');
   pokemons: Signal<Pokemon[] | undefined> = toSignal(

@@ -1,5 +1,5 @@
 import {Builder, StrictBuilder} from "builder-pattern";
-import {GetPokemonsUseCase, Pokemon, PokemonRepository,} from "@pokemon/domain";
+import {GetPokemonsUseCase, IPokemonDataProviderBoundary, Pokemon,} from "@pokemon/domain";
 
 describe("Get Pokemons Use Case", () => {
 
@@ -16,7 +16,7 @@ describe("Get Pokemons Use Case", () => {
 
     test("display list of pokemons", async () => {
         // Given
-         const pokemonRepository: PokemonRepository = Builder<PokemonRepository>().getPokemons(() => Promise.resolve([
+         const pokemonRepository: IPokemonDataProviderBoundary = Builder<IPokemonDataProviderBoundary>().getPokemons(() => Promise.resolve([
             StubPokemonBuilder().name("Pikachu").build(),
             StubPokemonBuilder().name("Carapuce").build()
         ])).build();

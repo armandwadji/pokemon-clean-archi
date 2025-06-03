@@ -6,7 +6,7 @@ export * from './usecases/deletePokemon/deletePokemonUseCase'
 export * from './usecases/updatePokemon/updatePokemonUseCase'
 
 // REPOSITORIES
-export * from './ports/repositories/PokemonRepository'
+export * from './ports/dataprovider/IPokemonDataProviderBoundary'
 
 // PRESENTERS
 export * from './ports/presenters/GetPokemonsPresenter'

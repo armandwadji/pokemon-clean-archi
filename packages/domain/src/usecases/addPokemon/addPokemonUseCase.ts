@@ -1,33 +1,37 @@
-import {PokemonRepository} from "../../ports/repositories/PokemonRepository";
-import {PokemonRequest} from "../../ports/request/PokemonRequest";
+import {IPokemonDataProviderBoundary} from "../../ports/dataprovider/IPokemonDataProviderBoundary";
 import {NewPokemonFields} from "../../ports/presenters/AddPokemonPresenter";
 import {Pokemon} from "../../entities/Pokemon";
 import {AbstractAddEditUseCase} from "../AbstractAddEditUseCase";
+import {
+    IAddPokemonEntryPointBoundary,
+    InputAddPokemonValues,
+    OutputAddPokemonValues
+} from "../../ports/boundary/IAddPokemonEntryPointBoundary";
+import {Builder} from "builder-pattern";
+import {PokemonRequest} from "../../ports/request/PokemonRequest";
 
 
-export class AddPokemonUseCase extends AbstractAddEditUseCase{
-    private pokemonRepository: PokemonRepository;
+export class AddPokemonUseCase extends AbstractAddEditUseCase<InputAddPokemonValues, OutputAddPokemonValues> implements IAddPokemonEntryPointBoundary{
 
-    constructor(pokemonRepository: PokemonRepository) {
+    constructor(private readonly pokemonDataProvider: IPokemonDataProviderBoundary) {
         super();
-        this.pokemonRepository = pokemonRepository;
     }
 
-    async execute(pokemonRequest: PokemonRequest) : Promise<Pokemon> {
-        const errors: Map<NewPokemonFields, string> = await this.validate(pokemonRequest);
+    override async execute(inputAddPokemonValues: InputAddPokemonValues) : Promise<OutputAddPokemonValues> {
+        const errors: Map<NewPokemonFields, string> = await this.validate(inputAddPokemonValues.pokemonRequest);
 
         if (!errors.size) {
             const pokemon = {
-                hp: pokemonRequest.hp,
-                cp: pokemonRequest.cp,
-                name: pokemonRequest.name,
-                picture: pokemonRequest.picture,
-                types: pokemonRequest.types || ['Normal'],
-                created: pokemonRequest.created || new Date(),
-            } as Pokemon;
+                hp: inputAddPokemonValues.pokemonRequest.hp,
+                cp: inputAddPokemonValues.pokemonRequest.cp,
+                name: inputAddPokemonValues.pokemonRequest.name,
+                picture: inputAddPokemonValues.pokemonRequest.picture,
+                types: inputAddPokemonValues.pokemonRequest.types || ['Normal'],
+                created: inputAddPokemonValues.pokemonRequest.created || new Date(),
+            } as PokemonRequest;
 
-            const addedPokemon: Pokemon = await this.pokemonRepository.addPokemon(pokemon);
-            return Promise.resolve(addedPokemon);
+            const addedPokemon: Pokemon = await this.pokemonDataProvider.addPokemon(pokemon);
+            return Promise.resolve(Builder<OutputAddPokemonValues>().pokemon(addedPokemon).build());
         }
         return Promise.reject(errors);
     }

@@ -18,7 +18,11 @@ describe("PokemonRepositoryHttp", () => {
             }
         } as HttpClient;
 
-        const pokemonRepository = new PokemonRepositoryHttp(httpClient);
+        jest.spyOn(PokemonRepositoryHttp.prototype, 'getPokemons').mockImplementation(() => {
+            return httpClient.get(`http://localhost:8000/pokemons`);
+        });
+
+        const pokemonRepository = new PokemonRepositoryHttp();
 
         // When
         const pokemons: Pokemon[] = await pokemonRepository.getPokemons();
@@ -37,7 +41,11 @@ describe("PokemonRepositoryHttp", () => {
             }
         } as HttpClient;
 
-        const pokemonRepository = new PokemonRepositoryHttp(httpClient);
+        jest.spyOn(PokemonRepositoryHttp.prototype, 'getPokemon').mockImplementation(() => {
+            return httpClient.get(`http://localhost:8000/pokemons/${pokemonFound.id}`);
+        });
+
+        const pokemonRepository = new PokemonRepositoryHttp();
 
         // When
         const pokemon: Pokemon = await pokemonRepository.getPokemon(pokemonFound.id);
@@ -55,7 +63,11 @@ describe("PokemonRepositoryHttp", () => {
             }
         } as HttpClient;
 
-        const pokemonRepository = new PokemonRepositoryHttp(httpClient);
+        jest.spyOn(PokemonRepositoryHttp.prototype, 'getPokemon').mockImplementation(() => {
+            return httpClient.get(`http://localhost:8000/pokemons/999`);
+        });
+
+        const pokemonRepository = new PokemonRepositoryHttp();
 
         // When
         const request = () => pokemonRepository.getPokemon("999");
@@ -67,6 +79,7 @@ describe("PokemonRepositoryHttp", () => {
     test("should add new pokemon", async () => {
         // Given
         const newPokemon: Pokemon = Builder<Pokemon>().name("Bulbizarre").id("3").build();
+        
         const httpClient: HttpClient = {
             post(url: string, body: any): Promise<any> {
                 expect(url).toBe(`http://localhost:8000/pokemons`)
@@ -75,7 +88,11 @@ describe("PokemonRepositoryHttp", () => {
             }
         } as HttpClient;
 
-        const pokemonRepository = new PokemonRepositoryHttp(httpClient);
+        jest.spyOn(PokemonRepositoryHttp.prototype, 'getPokemon').mockImplementation(() => {
+            return httpClient.post(`http://localhost:8000/pokemons`, newPokemon);
+        });
+
+        const pokemonRepository = new PokemonRepositoryHttp();
 
         // When
         const addedPokemon: Pokemon = await pokemonRepository.addPokemon(newPokemon);
@@ -98,7 +115,7 @@ describe("PokemonRepositoryHttp", () => {
             }
         } as HttpClient;
 
-        const pokemonRepository = new PokemonRepositoryHttp(httpClient);
+        const pokemonRepository = new PokemonRepositoryHttp();
 
         // When
         await pokemonRepository.deletePokemon(pokemonToDelete.id);

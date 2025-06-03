@@ -1,5 +1,5 @@
 import {Builder, StrictBuilder} from "builder-pattern";
-import {GetPokemonUseCase, Pokemon, PokemonRepository} from "@pokemon/domain";
+import {GetPokemonUseCase, IPokemonDataProviderBoundary, Pokemon} from "@pokemon/domain";
 
 describe("Get Pokemon Use Case", () => {
 
@@ -16,7 +16,7 @@ describe("Get Pokemon Use Case", () => {
 
     test("display a pokemon", async () => {
         // Given
-        const pokemonRepository: PokemonRepository = Builder<PokemonRepository>().getPokemon(() => Promise.resolve(
+        const pokemonRepository: IPokemonDataProviderBoundary = Builder<IPokemonDataProviderBoundary>().getPokemon(() => Promise.resolve(
             StubPokemonBuilder().build()
         )).build();
         const useCase: GetPokemonUseCase = new GetPokemonUseCase(pokemonRepository);

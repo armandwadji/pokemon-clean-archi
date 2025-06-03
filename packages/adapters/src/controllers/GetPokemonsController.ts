@@ -1,22 +1,27 @@
 import {PokemonsPresenterVM} from "../presenters/PokemonsPresenter";
 import {GetPokemonsUseCase} from "@pokemon/domain/src/usecases/getPokemons/getPokemonsUseCase";
 import {Pokemon} from "@pokemon/domain";
+import {
+    InputGetPokemonsValues,
+    OutputGetPokemonsValues
+} from "domain/src/ports/boundary/IGetPokemonsEntryPointBoundary";
+import {Builder} from "builder-pattern";
 
 export class GetPokemonsController {
-    private getPokemonUseCase: GetPokemonsUseCase;
     private readonly pokemonsPresenterVM: PokemonsPresenterVM;
 
-    constructor(getPokemonUseCase: GetPokemonsUseCase) {
-        this.getPokemonUseCase = getPokemonUseCase;
-        this.pokemonsPresenterVM = new PokemonsPresenterVM();
+    constructor(private readonly getPokemonUseCase: GetPokemonsUseCase) {
+        this.pokemonsPresenterVM = Builder<PokemonsPresenterVM>().build();
     }
 
     async getPokemons(): Promise<PokemonsPresenterVM> {
-        const pokemons: Pokemon[] = await this.getPokemonUseCase.execute();
-        this.pokemonsPresenterVM.pokemons = pokemons;
-        this.pokemonsPresenterVM.pokemonTypes = this.getPokemonTypeList(pokemons);
-
-        return Promise.resolve(this.pokemonsPresenterVM)
+        return this.getPokemonUseCase.execute(Builder<InputGetPokemonsValues>())
+            .then((outputPokemonsValues: OutputGetPokemonsValues) => {
+                this.pokemonsPresenterVM.pokemons = outputPokemonsValues.pokemons;
+                this.pokemonsPresenterVM.pokemonTypes = this.getPokemonTypeList(outputPokemonsValues.pokemons)
+                    return this.pokemonsPresenterVM
+                }
+            )
     }
 
     async searchPokemonsByName(search: string): Promise<PokemonsPresenterVM> {
@@ -24,12 +29,22 @@ export class GetPokemonsController {
         return this.pokemonsPresenterVM;
     }
 
+    /**
+     * Récupère la liste des types de pokemons
+     * @param pokemons
+     * @private
+     */
     private getPokemonTypeList(pokemons: Pokemon[]): string[] {
         let allCategories: string[] = [];
         pokemons.forEach((pokemon: Pokemon) => pokemon.types.forEach((type) => allCategories = [...allCategories, type]));
         return Array.from(new Set(allCategories));
     }
 
+    /**
+     * Retourne la liste des pokémons correspondant à la recherche
+     * @param search
+     * @private
+     */
     private searchPokemon(search: string): Pokemon[] | undefined {
         if (search.length <= 1) {
             return undefined;

@@ -1,14 +1,18 @@
 import {Pokemon} from "@pokemon/domain/src/entities/Pokemon";
-import {PokemonRepository} from "@pokemon/domain/src/ports/repositories/PokemonRepository";
 import {POKEMONS} from "../../../../fixtures/mock-pokemon-list";
-import {PokemonRequest} from "@pokemon/domain";
+import {IPokemonDataProviderBoundary, PokemonRequest} from "@pokemon/domain";
+import {DataProvider} from "../../DataProvider";
+import {DataProviderCode, Version} from "../../IDataprovider";
+import {RegisterPokemonDataProvider} from "../IPokemonDataProvider";
 
 
-export class PokemonRepositoryInMemory implements PokemonRepository{
+@RegisterPokemonDataProvider
+export class PokemonRepositoryInMemory extends DataProvider implements IPokemonDataProviderBoundary{
     private pokemons: Pokemon[];
 
-    constructor(pokemons: Pokemon[] = POKEMONS) {
-        this.pokemons = pokemons
+    constructor() {
+        super(Version.V1, DataProviderCode.AUTH);
+        this.pokemons = POKEMONS
     }
 
     getPokemons(): Promise<Pokemon[]> {
@@ -16,26 +20,30 @@ export class PokemonRepositoryInMemory implements PokemonRepository{
     }
 
     getPokemon(id: string): Promise<Pokemon> {
-        const pokemonResolved: Pokemon | undefined = this.pokemons.find((p:Pokemon) => p.id == id);
-        if (pokemonResolved) {
-            return Promise.resolve(pokemonResolved);
-        } else {
-            throw new Error(`${id} doesn't exist in this repository`)
-        }
+        return new Promise((resolve, reject)=>{
+            const pokemonResolved: Pokemon | undefined = this.pokemons.find((p:Pokemon) => p.id == id);
+            if (pokemonResolved) {
+                return resolve(pokemonResolved);
+            } else {
+                reject(new Error(`pokemon by id ${id} doesn't exist in this repository`));
+            }
+        })
     }
 
     addPokemon(pokemon: PokemonRequest): Promise<Pokemon> {
-        const pokemonToAdd: Pokemon = {
-            id: new Date().getTime().toString(),
-            hp: pokemon.hp,
-            cp: pokemon.cp,
-            name: pokemon.name,
-            picture: pokemon.picture,
-            types: pokemon.types,
-            created:new Date(),
-        }
-        this.pokemons.push(pokemonToAdd);
-        return Promise.resolve(pokemonToAdd);
+        return new Promise(resolve => {
+            const pokemonToAdd: Pokemon = {
+                id: new Date().getTime().toString(),
+                hp: pokemon.hp,
+                cp: pokemon.cp,
+                name: pokemon.name,
+                picture: pokemon.picture,
+                types: pokemon.types,
+                created:new Date(),
+            }
+            this.pokemons.push(pokemonToAdd);
+            return resolve(pokemonToAdd);
+        })
     }
 
     updatePokemon( id:string, pokemonRequest: PokemonRequest): Promise<Pokemon> {
@@ -55,8 +63,10 @@ export class PokemonRepositoryInMemory implements PokemonRepository{
     }
 
     deletePokemon(id: string): Promise<void> {
-        this.pokemons = this.pokemons.filter((pokemon: Pokemon) => pokemon.id !== id);
-        return Promise.resolve();
+        return new Promise(resolve => {
+            this.pokemons = this.pokemons.filter((pokemon: Pokemon) => pokemon.id !== id);
+            resolve();
+        });
     }
 
     searchPokemonByName(search: string): Promise<Pokemon[] | undefined> {

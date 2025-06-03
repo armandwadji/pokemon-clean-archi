@@ -20,6 +20,8 @@ import {combineLatest, concatMap, debounceTime, distinctUntilChanged, from, map,
 import {Pokemon, PokemonRequest} from '@pokemon/domain';
 import {AddedPokemonController, EditPokemonController} from '@pokemon/web-adapters';
 import {DataSharedService} from '../../service/data-shared/data-shared.service';
+import {Builder} from 'builder-pattern';
+import {TYPE_FORM, TypeFormEnum} from '../../model/enum/type-form.enum';
 
 @Component({
   selector: 'app-pokemon-form',
@@ -33,13 +35,14 @@ export class PokemonFormComponent implements OnInit , AfterViewInit{
 
   private readonly router: Router = inject(Router);
   private readonly fb: FormBuilder = inject(FormBuilder);
+  private readonly typeForm: TypeFormEnum = inject(TYPE_FORM);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
   private readonly dataShared: DataSharedService = inject(DataSharedService);
   private readonly addController: AddedPokemonController = inject(AddedPokemonController);
   private readonly editController: EditPokemonController = inject(EditPokemonController);
 
   formGroup: FormGroup;
-  isAddForm: boolean = this.router.url.includes(routesName.pokemon.children.add.path);
+  isAddForm: boolean;
 
   types: WritableSignal<string[]> = signal(this.dataShared.pokemonTypes);
   pokemonErrors: WritableSignal<PokemonErrors> = signal({
@@ -50,6 +53,8 @@ export class PokemonFormComponent implements OnInit , AfterViewInit{
   })
 
   ngOnInit() {
+    this.isAddForm = this.typeForm === TypeFormEnum.CREATE;
+
     this.formGroup = this.fb.group({
       id: [this.pokemon()?.id],
       hp: [this.pokemon()?.hp],
@@ -62,9 +67,8 @@ export class PokemonFormComponent implements OnInit , AfterViewInit{
   }
 
   ngAfterViewInit(): void {
-    const controller = this.isAddForm ? this.addController : this.editController;
+    const controller: AddedPokemonController | EditPokemonController = this.isAddForm ? this.addController : this.editController;
     this.formGroup.valueChanges.pipe(
-      takeUntilDestroyed(this.destroyRef),
       debounceTime(200),
       distinctUntilChanged(),
       concatMap((formValue: any) => {
@@ -75,8 +79,9 @@ export class PokemonFormComponent implements OnInit , AfterViewInit{
           from(controller.validatePicture(formValue.picture)).pipe(startWith(undefined)),
         ])
       }),
-      map(([nameError, hpError, cpError, pictureError]) => ({nameError, hpError, cpError, pictureError} as PokemonErrors)),
-    ).subscribe((pokemonErrors: PokemonErrors) => this.pokemonErrors.set(pokemonErrors))
+      map(([nameError, hpError, cpError, pictureError] : (string|undefined)[]) => ({nameError, hpError, cpError, pictureError} as PokemonErrors)),
+    ).pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((pokemonErrors: PokemonErrors) => this.pokemonErrors.set(pokemonErrors))
   }
 
   /**
@@ -126,14 +131,15 @@ export class PokemonFormComponent implements OnInit , AfterViewInit{
     $event.preventDefault();
     $event.stopImmediatePropagation();
     let observable$: Observable<Pokemon>;
-    const pokemonRequest : PokemonRequest = {
-      hp: this.formGroup.get('hp')?.value,
-      cp: this.formGroup.get('cp')?.value,
-      name: this.formGroup.get('name')?.value,
-      picture: this.formGroup.get('picture')?.value,
-      types: this.formGroup.get('types')?.value,
-      created: this.formGroup.get('created')?.value,
-    };
+
+    const pokemonRequest : PokemonRequest = Builder<PokemonRequest>()
+      .hp(this.formGroup.get('hp')?.value)
+      .cp(this.formGroup.get('cp')?.value)
+      .name(this.formGroup.get('name')?.value)
+      .picture(this.formGroup.get('picture')?.value)
+      .types(this.formGroup.get('types')?.value)
+      .created(this.formGroup.get('created')?.value)
+      .build();
 
     if (this.isAddForm) {
       observable$ = from(this.addController.create(pokemonRequest));
@@ -144,18 +150,13 @@ export class PokemonFormComponent implements OnInit , AfterViewInit{
     observable$
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (pokemon: Pokemon)=> {
-          this.router.navigate([routesName.pokemon.children.detail.fullPath, pokemon.id]);
-        },
-        error: (errors: Map<string, string>)=> {
-          const pokemonErrors: PokemonErrors = {
-            hpError: errors.get('hp'),
-            cpError: errors.get('cp'),
-            nameError: errors.get('name'),
-            pictureError: errors.get('picture'),
-          };
-          this.pokemonErrors.set(pokemonErrors);
-        }
+        next: (pokemon: Pokemon)=> this.router.navigate([routesName.pokemon.children.detail.fullPath, pokemon.id]),
+        error: (errors: Map<string, string>)=> this.pokemonErrors.set(Builder<PokemonErrors>()
+            .hpError(errors.get('hp'))
+            .cpError(errors.get('cp'))
+            .nameError(errors.get('name'))
+            .pictureError(errors.get('picture'))
+            .build()),
       });
   }
 }

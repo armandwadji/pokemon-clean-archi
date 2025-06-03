@@ -1,7 +1,7 @@
 import {Pokemon} from "../../entities/Pokemon";
 import {PokemonRequest} from "../request/PokemonRequest";
 
-export interface PokemonRepository{
+export interface IPokemonDataProviderBoundary {
     getPokemons(): Promise<Pokemon[]>
 
     getPokemon(pokemon: string): Promise<Pokemon>

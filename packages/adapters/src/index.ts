@@ -15,6 +15,8 @@ export * from './presenters/PokemonPresenter'
 export * from './presenters/AddedPokemonPresenterAdapter'
 
 // REPOSITORY
-export * from './repositories/http/HttpClient'
-export * from './repositories/http/pokemon/PokemonRepositoryHttp'
-export * from './repositories/inMemory/pokemon/PokemonRepositoryInMemory'
+export * from './dataProvider/pokemon/http/HttpClient'
+export * from './dataProvider/pokemon/http/PokemonRepositoryHttp'
+export * from './dataProvider/pokemon/inMemory/PokemonRepositoryInMemory'
+export * from './dataProvider/pokemon/PokemonDataProviderFactory'
+export * from './dataProvider/pokemon/IPokemonDataProvider'

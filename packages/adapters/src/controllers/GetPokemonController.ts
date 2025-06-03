@@ -1,18 +1,15 @@
 import {PokemonPresenterVM} from "../presenters/PokemonPresenter";
-import {GetPokemonUseCase, Pokemon} from "@pokemon/domain";
+import {GetPokemonUseCase} from "@pokemon/domain";
+import {InputGetPokemonValues, OutputGetPokemonValues} from "domain/src/ports/boundary/IGetPokemonEntryPointBoundary";
+import {Builder} from "builder-pattern";
 
 export class GetPokemonController {
-    private readonly getPokemonUseCase : GetPokemonUseCase;
 
-    constructor(getPokemonUseCase: GetPokemonUseCase) {
-        this.getPokemonUseCase = getPokemonUseCase;
-    }
+    constructor(private readonly getPokemonUseCase: GetPokemonUseCase) {}
 
      async getPokemon(pokemonId: string): Promise<PokemonPresenterVM> {
-        const pokemon : Pokemon = await this.getPokemonUseCase.execute(pokemonId);
-        return{
-            pokemon: pokemon,
-        }
+        return this.getPokemonUseCase.execute(Builder<InputGetPokemonValues>().pokemonId(pokemonId).build())
+            .then((outputPokemonValues: OutputGetPokemonValues) => Builder<PokemonPresenterVM>().pokemon(outputPokemonValues.pokemon).build());
     }
     
 }

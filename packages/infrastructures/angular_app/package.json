@@ -4,6 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "dev": "ng serve --configuration=development",
+    "prod": "ng serve --configuration=production & npm run json-server",
+    "json-server": "npx json-server --watch src/assets/mock/db.json --port 8000",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "jest"

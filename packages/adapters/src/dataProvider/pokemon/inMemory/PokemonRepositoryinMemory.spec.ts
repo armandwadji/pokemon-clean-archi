@@ -12,7 +12,7 @@ describe('PokemonRepositoryInMemory', () => {
 
     test("get pokemons", async () => {
         // Given
-        const pokemonRepository = new PokemonRepositoryInMemory(stubPokemons);
+        const pokemonRepository = new PokemonRepositoryInMemory();
 
         // When
         const pokemonsResponse: Pokemon[] = await pokemonRepository.getPokemons();
@@ -23,7 +23,7 @@ describe('PokemonRepositoryInMemory', () => {
 
     test("get pokemon by id", async () => {
         // Given
-        const pokemonRepository = new PokemonRepositoryInMemory(stubPokemons);
+        const pokemonRepository = new PokemonRepositoryInMemory();
 
         // When
         const pokemonResponse: Pokemon = await pokemonRepository.getPokemon("1");
@@ -34,7 +34,7 @@ describe('PokemonRepositoryInMemory', () => {
 
     test("throw error when pokemon doesn't exist", () => {
         // Given
-        const pokemonRepository = new PokemonRepositoryInMemory(stubPokemons);
+        const pokemonRepository = new PokemonRepositoryInMemory();
 
         // When
         const request = () => pokemonRepository.getPokemon("999");
@@ -45,7 +45,7 @@ describe('PokemonRepositoryInMemory', () => {
 
     test("add new pokemon", async () => {
         // Given
-        const pokemonRepository = new PokemonRepositoryInMemory(stubPokemons);
+        const pokemonRepository = new PokemonRepositoryInMemory();
         const newPokemon: PokemonRequest = Builder<PokemonRequest>().name("Bulbizarre").build();
 
         // When
@@ -59,7 +59,7 @@ describe('PokemonRepositoryInMemory', () => {
 
     test("delete pokemon", async () => {
         // Given
-        const pokemonRepository = new PokemonRepositoryInMemory(stubPokemons);
+        const pokemonRepository = new PokemonRepositoryInMemory();
         const pokemonToDelete: Pokemon = stubPokemons[0];
 
         // When

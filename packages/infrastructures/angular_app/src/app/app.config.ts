@@ -1,4 +1,10 @@
-import {ApplicationConfig, InjectionToken, provideZoneChangeDetection} from '@angular/core';
+import {
+  ApplicationConfig,
+  inject,
+  InjectionToken,
+  provideAppInitializer,
+  provideZoneChangeDetection
+} from '@angular/core';
 import {PreloadAllModules, provideRouter, withComponentInputBinding, withPreloading} from '@angular/router';
 import {routes} from './app.routes';
 import {firstValueFrom} from 'rxjs';
@@ -8,7 +14,7 @@ import {
   DeletePokemonUseCase,
   GetPokemonsUseCase,
   GetPokemonUseCase,
-  PokemonRepository,
+  IPokemonDataProviderBoundary,
   UpdatePokemonUseCase
 } from '@pokemon/domain';
 import {
@@ -18,12 +24,15 @@ import {
   GetPokemonController,
   GetPokemonsController,
   HttpClient,
-  PokemonRepositoryInMemory
+  IPokemonDataProvider,
+  PokemonDataProviderFactory
 } from '@pokemon/web-adapters';
+import {Config} from './shared/model/config.model';
+import {Init} from './init';
 
 
-export const IHttpClient = new InjectionToken<HttpClient>('HttpClient');
-export const IPokemonRepository = new InjectionToken<PokemonRepository>('PokemonRepository')
+const IHttpClient = new InjectionToken<HttpClient>('HttpClient');
+const IPokemonDataProviderInjectionToken = new InjectionToken<IPokemonDataProvider>('IPokemonDataProviderBoundary')
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -45,67 +54,80 @@ export const appConfig: ApplicationConfig = {
       }),
       deps: [AngularHttpClient]
     },
+
+    /************** DATA PROVIDERS **************/
     {
-      provide: IPokemonRepository,
-      useFactory: (): PokemonRepository => new PokemonRepositoryInMemory(),
+      provide: IPokemonDataProviderInjectionToken,
+      useFactory: () => new PokemonDataProviderFactory(inject(Init).getConfig().pokemonDataProviderVersion)
     },
-    /*    {
-          provide: IPokemonRepository,
-          useFactory: (httpClient: HttpClient) : PokemonRepository => new PokemonRepositoryHttp(httpClient),
-          deps: [IHttpClient]
-        },*/
+
+    /************** GET POKÉMONS **************/
     {
       provide: GetPokemonsUseCase,
-      useFactory: (pokemonRepository: PokemonRepository): GetPokemonsUseCase => new GetPokemonsUseCase(pokemonRepository),
-      deps: [IPokemonRepository]
+      useFactory: (pokemonRepository: IPokemonDataProviderBoundary): GetPokemonsUseCase => new GetPokemonsUseCase(pokemonRepository),
+      deps: [IPokemonDataProviderInjectionToken]
     },
     {
       provide: GetPokemonsController,
       useFactory: (getPokemonsUseCase: GetPokemonsUseCase): GetPokemonsController => new GetPokemonsController(getPokemonsUseCase),
       deps: [GetPokemonsUseCase]
     },
+
+    /************** GET POKÉMON **************/
     {
       provide: GetPokemonUseCase,
-      useFactory: (pokemonRepository: PokemonRepository): GetPokemonUseCase => new GetPokemonUseCase(pokemonRepository),
-      deps: [IPokemonRepository]
+      useFactory: (pokemonRepository: IPokemonDataProviderBoundary): GetPokemonUseCase => new GetPokemonUseCase(pokemonRepository),
+      deps: [IPokemonDataProviderInjectionToken]
     },
     {
       provide: GetPokemonController,
       useFactory: (getPokemonsUseCase: GetPokemonUseCase): GetPokemonController => new GetPokemonController(getPokemonsUseCase),
       deps: [GetPokemonUseCase]
     },
+
+    /************** POST POKÉMONS **************/
     {
       provide: AddPokemonUseCase,
-      useFactory: (pokemonRepository: PokemonRepository): AddPokemonUseCase => new AddPokemonUseCase(pokemonRepository),
-      deps: [IPokemonRepository]
+      useFactory: (pokemonRepository: IPokemonDataProviderBoundary): AddPokemonUseCase => new AddPokemonUseCase(pokemonRepository),
+      deps: [IPokemonDataProviderInjectionToken]
     },
     {
       provide: AddedPokemonController,
       useFactory: (addPokemonUseCase: AddPokemonUseCase): AddedPokemonController => new AddedPokemonController(addPokemonUseCase),
       deps: [AddPokemonUseCase]
     },
+
+    /************** UPDATE POKÉMONS **************/
     {
       provide: UpdatePokemonUseCase,
-      useFactory: (pokemonRepository: PokemonRepository): UpdatePokemonUseCase => new UpdatePokemonUseCase(pokemonRepository),
-      deps: [IPokemonRepository]
+      useFactory: (pokemonRepository: IPokemonDataProviderBoundary): UpdatePokemonUseCase => new UpdatePokemonUseCase(pokemonRepository),
+      deps: [IPokemonDataProviderInjectionToken]
     },
     {
       provide: EditPokemonController,
       useFactory: (editPokemonUseCase: UpdatePokemonUseCase): EditPokemonController => new EditPokemonController(editPokemonUseCase),
       deps: [UpdatePokemonUseCase]
     },
+
+    /************** DELETE POKÉMONS **************/
     {
       provide: DeletePokemonUseCase,
-      useFactory: (pokemonRepository: PokemonRepository): DeletePokemonUseCase => new DeletePokemonUseCase(pokemonRepository),
-      deps: [IPokemonRepository]
+      useFactory: (pokemonRepository: IPokemonDataProviderBoundary): DeletePokemonUseCase => new DeletePokemonUseCase(pokemonRepository),
+      deps: [IPokemonDataProviderInjectionToken]
     },
     {
       provide: DeletePokemonController,
       useFactory: (editPokemonUseCase: DeletePokemonUseCase): DeletePokemonController => new DeletePokemonController(editPokemonUseCase),
       deps: [DeletePokemonUseCase]
     },
+
+    provideAppInitializer((): Promise<Config> => inject(Init).fetchConfig()),
     provideHttpClient(withInterceptorsFromDi()),
     provideZoneChangeDetection({eventCoalescing: true}),
-    provideRouter(routes, withPreloading(PreloadAllModules), withComponentInputBinding(),)
+    provideRouter(
+      routes,
+      withPreloading(PreloadAllModules),
+      withComponentInputBinding()
+    )
   ]
 };

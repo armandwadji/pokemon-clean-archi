@@ -1,21 +1,25 @@
 import {AddPokemonUseCase, NewPokemonFields, Pokemon, PokemonRequest} from "@pokemon/domain";
 import {AbstractAddEditController} from "./AbstractAddEditController";
+import {Builder} from "builder-pattern";
+import {
+    InputAddPokemonValues,
+    OutputAddPokemonValues
+} from "@pokemon/domain/src/ports/boundary/IAddPokemonEntryPointBoundary";
 
 
 export class AddedPokemonController extends AbstractAddEditController{
-    private addPokemonUseCase: AddPokemonUseCase;
 
-    constructor(addPokemonUseCase: AddPokemonUseCase) {
+    constructor(private readonly addPokemonUseCase: AddPokemonUseCase) {
         super();
-        this.addPokemonUseCase = addPokemonUseCase;
     }
 
-    create(pokemonRequest: PokemonRequest): Promise<Pokemon> {
-        return this.addPokemonUseCase.execute(pokemonRequest);
+    async create(pokemonRequest: PokemonRequest): Promise<Pokemon> {
+        return this.addPokemonUseCase.execute(Builder<InputAddPokemonValues>().pokemonRequest(pokemonRequest).build())
+            .then((outputAddPokemonValues : OutputAddPokemonValues) => outputAddPokemonValues.pokemon);
     }
 
 
-    validate(): Promise<Map<NewPokemonFields, string>> {
+    override validate(): Promise<Map<NewPokemonFields, string>> {
         return this.addPokemonUseCase.validate(new PokemonRequest(this.pokemonPresenter.hp, this.pokemonPresenter.cp, this.pokemonPresenter.name, this.pokemonPresenter.picture))
     }
 }
