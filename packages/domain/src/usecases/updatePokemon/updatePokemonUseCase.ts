@@ -1,4 +1,4 @@
-import {IPokemonDataProviderBoundary} from "../../ports/dataprovider/IPokemonDataProviderBoundary";
+import {IPokemonDataProviderBoundary} from "../../ports/boundary/dataprovider/IPokemonDataProviderBoundary";
 import {NewPokemonFields} from "../../ports/presenters/AddPokemonPresenter";
 import {Pokemon} from "../../entities/Pokemon";
 import {AbstractAddEditUseCase} from "../AbstractAddEditUseCase";
@@ -6,7 +6,7 @@ import {
     IEditPokemonEntryPointBoundary,
     InputEditPokemonValues,
     OutputEditPokemonValues
-} from "../../ports/boundary/IEditPokemonEntryPointBoundary";
+} from "../../ports/boundary/entrypoint/IEditPokemonEntryPointBoundary";
 import {Builder} from "builder-pattern";
 import {PokemonRequest} from "../../ports/request/PokemonRequest";
 

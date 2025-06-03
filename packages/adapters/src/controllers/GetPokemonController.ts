@@ -1,6 +1,9 @@
 import {PokemonPresenterVM} from "../presenters/PokemonPresenter";
 import {GetPokemonUseCase} from "@pokemon/domain";
-import {InputGetPokemonValues, OutputGetPokemonValues} from "domain/src/ports/boundary/IGetPokemonEntryPointBoundary";
+import {
+    InputGetPokemonValues,
+    OutputGetPokemonValues
+} from "domain/src/ports/boundary/entrypoint/IGetPokemonEntryPointBoundary";
 import {Builder} from "builder-pattern";
 
 export class GetPokemonController {

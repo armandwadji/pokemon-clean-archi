@@ -1,4 +1,4 @@
-import {InputValues, IUseCase, OutputValues} from "../../usecases/IUseCase";
+import {InputValues, IUseCase, OutputValues} from "../../../usecases/IUseCase";
 
 export interface IDeletePokemonEntryPointBoundary extends IUseCase<InputDeletePokemonValues, OutputDeletePokemonValues>{
     execute(input: InputDeletePokemonValues): Promise<OutputDeletePokemonValues>

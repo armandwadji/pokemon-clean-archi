@@ -1,4 +1,4 @@
-import {InputValues, IUseCase, OutputValues} from "../../usecases/IUseCase";
+import {InputValues, IUseCase, OutputValues} from "../../../usecases/IUseCase";
 import {Pokemon, PokemonRequest} from "@pokemon/domain";
 
 export interface IEditPokemonEntryPointBoundary extends IUseCase<InputEditPokemonValues, OutputEditPokemonValues>{

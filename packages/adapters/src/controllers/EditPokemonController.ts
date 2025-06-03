@@ -4,7 +4,7 @@ import {Builder} from "builder-pattern";
 import {
     InputEditPokemonValues,
     OutputEditPokemonValues
-} from "@pokemon/domain/src/ports/boundary/IEditPokemonEntryPointBoundary";
+} from "domain/src/ports/boundary/entrypoint/IEditPokemonEntryPointBoundary";
 
 export class EditPokemonController extends AbstractAddEditController{
     private editPokemonUseCase: UpdatePokemonUseCase;

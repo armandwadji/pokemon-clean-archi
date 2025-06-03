@@ -4,7 +4,7 @@ import {
     IDeletePokemonEntryPointBoundary,
     InputDeletePokemonValues,
     OutputDeletePokemonValues
-} from "../../ports/boundary/IDeletePokemonEntryPointBoundary";
+} from "../../ports/boundary/entrypoint/IDeletePokemonEntryPointBoundary";
 import {Builder} from "builder-pattern";
 
 export class DeletePokemonUseCase extends UseCase<InputDeletePokemonValues, OutputDeletePokemonValues> implements IDeletePokemonEntryPointBoundary{

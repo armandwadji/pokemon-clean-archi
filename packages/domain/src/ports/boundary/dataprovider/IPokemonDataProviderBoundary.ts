@@ -1,5 +1,5 @@
-import {Pokemon} from "../../entities/Pokemon";
-import {PokemonRequest} from "../request/PokemonRequest";
+import {Pokemon} from "../../../entities/Pokemon";
+import {PokemonRequest} from "../../request/PokemonRequest";
 
 export interface IPokemonDataProviderBoundary {
     getPokemons(): Promise<Pokemon[]>

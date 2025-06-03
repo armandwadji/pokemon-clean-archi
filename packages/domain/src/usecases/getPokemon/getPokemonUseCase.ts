@@ -1,10 +1,10 @@
-import {IPokemonDataProviderBoundary} from "../../ports/dataprovider/IPokemonDataProviderBoundary";
+import {IPokemonDataProviderBoundary} from "../../ports/boundary/dataprovider/IPokemonDataProviderBoundary";
 import {UseCase} from "../UseCase";
 import {
     IGetPokemonEntryPointBoundary,
     InputGetPokemonValues,
     OutputGetPokemonValues
-} from "../../ports/boundary/IGetPokemonEntryPointBoundary";
+} from "../../ports/boundary/entrypoint/IGetPokemonEntryPointBoundary";
 import {Pokemon} from "../../entities/Pokemon";
 import {Builder} from "builder-pattern";
 

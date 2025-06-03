@@ -1,5 +1,5 @@
 import {DeletePokemonUseCase} from "@pokemon/domain";
-import {InputDeletePokemonValues} from "@pokemon/domain/src/ports/boundary/IDeletePokemonEntryPointBoundary";
+import {InputDeletePokemonValues} from "domain/src/ports/boundary/entrypoint/IDeletePokemonEntryPointBoundary";
 import {Builder} from "builder-pattern";
 
 export class DeletePokemonController{

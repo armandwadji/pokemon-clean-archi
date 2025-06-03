@@ -4,7 +4,7 @@ import {Pokemon} from "@pokemon/domain";
 import {
     InputGetPokemonsValues,
     OutputGetPokemonsValues
-} from "domain/src/ports/boundary/IGetPokemonsEntryPointBoundary";
+} from "domain/src/ports/boundary/entrypoint/IGetPokemonsEntryPointBoundary";
 import {Builder} from "builder-pattern";
 
 export class GetPokemonsController {
