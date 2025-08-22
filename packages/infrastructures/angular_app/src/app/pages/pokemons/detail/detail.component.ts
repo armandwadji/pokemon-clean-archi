@@ -1,5 +1,5 @@
 import {Component, DestroyRef, inject, input, InputSignal,} from '@angular/core';
-import {PokemonTypeColorPipe} from '../../../shared/pipe/pokemon-type-color.pipe';
+import {PokemonTypeColorPipe} from '../../../shared/pipe/type-color/pokemon-type-color.pipe';
 import {DatePipe} from '@angular/common';
 import {LoaderComponent} from '../../../shared/component/loader/loader.component';
 import {routesName} from '../../../app-routing-config';
@@ -8,10 +8,11 @@ import {Pokemon} from '@pokemon/domain';
 import {DeletePokemonController} from '@pokemon/web-adapters';
 import {from} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {TranslatePipe} from '../../../shared/pipe/translate/translate.pipe';
 
 @Component({
   selector: 'app-detail',
-  imports: [PokemonTypeColorPipe, DatePipe, LoaderComponent],
+  imports: [PokemonTypeColorPipe, DatePipe, LoaderComponent, TranslatePipe],
   templateUrl: './detail.component.html',
 })
 export class DetailComponent {

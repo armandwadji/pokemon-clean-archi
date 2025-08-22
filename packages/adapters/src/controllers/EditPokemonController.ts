@@ -1,5 +1,5 @@
 import {AbstractAddEditController} from "./AbstractAddEditController";
-import {NewPokemonFields, Pokemon, PokemonRequest, UpdatePokemonUseCase} from "@pokemon/domain";
+import {Pokemon, PokemonFields, PokemonRequest, UpdatePokemonUseCase} from "@pokemon/domain";
 import {Builder} from "builder-pattern";
 import {
     InputEditPokemonValues,
@@ -19,7 +19,7 @@ export class EditPokemonController extends AbstractAddEditController{
             .then((output  : OutputEditPokemonValues) => output.pokemon);
     }
 
-    override validate(): Promise<Map<NewPokemonFields, string>> {
+    override validate(): Promise<Map<PokemonFields, string>> {
         return this.editPokemonUseCase.validate(new PokemonRequest(this.pokemonPresenter.hp, this.pokemonPresenter.cp, this.pokemonPresenter.name, this.pokemonPresenter.picture));
     }
 

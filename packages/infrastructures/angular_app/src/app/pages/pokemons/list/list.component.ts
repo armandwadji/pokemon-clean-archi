@@ -5,7 +5,7 @@ import {Router} from '@angular/router';
 import {GetPokemonsController, PokemonsPresenterVM} from '@pokemon/web-adapters';
 import {from} from 'rxjs';
 import {Pokemon} from '@pokemon/domain';
-import {PokemonTypeColorPipe} from '../../../shared/pipe/pokemon-type-color.pipe';
+import {PokemonTypeColorPipe} from '../../../shared/pipe/type-color/pokemon-type-color.pipe';
 import {BorderCardDirective} from '../../../shared/directive/border-card.directive';
 import {routesName} from '../../../app-routing-config';
 import {LoaderComponent} from '../../../shared/component/loader/loader.component';

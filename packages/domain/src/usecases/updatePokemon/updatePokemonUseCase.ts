@@ -1,5 +1,5 @@
 import {IPokemonDataProviderBoundary} from "../../ports/boundary/dataprovider/IPokemonDataProviderBoundary";
-import {NewPokemonFields} from "../../ports/presenters/AddPokemonPresenter";
+import {PokemonFields} from "../../ports/presenters/AddPokemonPresenter";
 import {Pokemon} from "../../entities/Pokemon";
 import {AbstractAddEditUseCase} from "../AbstractAddEditUseCase";
 import {
@@ -8,7 +8,7 @@ import {
     OutputEditPokemonValues
 } from "../../ports/boundary/entrypoint/IEditPokemonEntryPointBoundary";
 import {Builder} from "builder-pattern";
-import {PokemonRequest} from "../../ports/request/PokemonRequest";
+import {PokemonRequest} from "@pokemon/domain";
 
 export class UpdatePokemonUseCase extends AbstractAddEditUseCase<InputEditPokemonValues, OutputEditPokemonValues> implements IEditPokemonEntryPointBoundary{
 
@@ -17,7 +17,7 @@ export class UpdatePokemonUseCase extends AbstractAddEditUseCase<InputEditPokemo
     }
     
     override async execute(inputEditPokemonValues: InputEditPokemonValues): Promise<OutputEditPokemonValues> {
-        const errors: Map<NewPokemonFields, string> = await this.validate(inputEditPokemonValues.pokemonRequest);
+        const errors: Map<PokemonFields, string> = await this.validate(inputEditPokemonValues.pokemonRequest);
 
         if (!errors.size) {
             const pokemon: PokemonRequest = Builder<PokemonRequest>()

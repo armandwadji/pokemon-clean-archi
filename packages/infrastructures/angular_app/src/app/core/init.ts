@@ -1,4 +1,4 @@
-import {Config} from './shared/model/config.model';
+import {Config} from '../shared/model/config.model';
 import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {firstValueFrom, map, tap} from 'rxjs';
@@ -8,6 +8,7 @@ import {firstValueFrom, map, tap} from 'rxjs';
 })
 export class Init{
   private readonly http: HttpClient = inject(HttpClient);
+  // private readonly keepAliveService: KeepAliveService = inject(KeepAliveService);
 
   private config: Config;
   private configPath = 'assets/config/config.json';
@@ -23,16 +24,12 @@ export class Init{
     return firstValueFrom(
       this.http.get(this.configPath).pipe(
         map((config : any) => new Config(config) ),
-        tap((config: Config) => this.config = config)
-        /*        tap((config: Config) => {
-                  if (
-                    config.isKeepAliveActive() &&
-                    this.dataShared.isLoggedIn &&
-                    environment.production
-                  ) {
-                    this.keepAliveService.KeepAlive(config);
-                  }
-                }),*/
+        tap((config: Config) => this.config = config),
+        // tap((config: Config) => {
+        //   if (config.keepAliveActive && this.dataShared.isLoggedIn && environment.production) {
+        //             this.keepAliveService.KeepAlive(config);
+        //   }
+        // }),
       ),
     );
   }

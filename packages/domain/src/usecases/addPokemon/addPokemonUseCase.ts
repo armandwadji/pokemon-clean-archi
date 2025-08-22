@@ -1,15 +1,14 @@
 import {IPokemonDataProviderBoundary} from "../../ports/boundary/dataprovider/IPokemonDataProviderBoundary";
-import {NewPokemonFields} from "../../ports/presenters/AddPokemonPresenter";
+import {PokemonFields} from "../../ports/presenters/AddPokemonPresenter";
 import {Pokemon} from "../../entities/Pokemon";
-import {AbstractAddEditUseCase} from "../AbstractAddEditUseCase";
 import {
     IAddPokemonEntryPointBoundary,
     InputAddPokemonValues,
     OutputAddPokemonValues
 } from "../../ports/boundary/entrypoint/IAddPokemonEntryPointBoundary";
 import {Builder} from "builder-pattern";
-import {PokemonRequest} from "../../ports/request/PokemonRequest";
-
+import {PokemonRequest} from "@pokemon/domain";
+import {AbstractAddEditUseCase} from "../AbstractAddEditUseCase";
 
 export class AddPokemonUseCase extends AbstractAddEditUseCase<InputAddPokemonValues, OutputAddPokemonValues> implements IAddPokemonEntryPointBoundary{
 
@@ -18,7 +17,7 @@ export class AddPokemonUseCase extends AbstractAddEditUseCase<InputAddPokemonVal
     }
 
     override async execute(inputAddPokemonValues: InputAddPokemonValues) : Promise<OutputAddPokemonValues> {
-        const errors: Map<NewPokemonFields, string> = await this.validate(inputAddPokemonValues.pokemonRequest);
+        const errors: Map<PokemonFields, string> = await this.validate(inputAddPokemonValues.pokemonRequest);
 
         if (!errors.size) {
             const pokemon: PokemonRequest = Builder<PokemonRequest>()

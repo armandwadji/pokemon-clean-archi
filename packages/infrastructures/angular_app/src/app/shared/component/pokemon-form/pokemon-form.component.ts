@@ -13,7 +13,7 @@ import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, ReactiveFormsModule,} from '@angular/forms';
 
 import {LoaderComponent} from '../loader/loader.component';
-import {PokemonTypeColorPipe} from '../../pipe/pokemon-type-color.pipe';
+import {PokemonTypeColorPipe} from '../../pipe/type-color/pokemon-type-color.pipe';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {routesName} from '../../../app-routing-config';
 import {combineLatest, concatMap, debounceTime, distinctUntilChanged, from, map, Observable, startWith} from 'rxjs';
@@ -21,21 +21,23 @@ import {Pokemon, PokemonRequest} from '@pokemon/domain';
 import {AddedPokemonController, EditPokemonController} from '@pokemon/web-adapters';
 import {DataSharedService} from '../../service/data-shared/data-shared.service';
 import {Builder} from 'builder-pattern';
-import {TYPE_FORM, TypeFormEnum} from '../../model/enum/type-form.enum';
+import {TypeFormEnum} from '../../model/enum/type-form.enum';
+import {TranslatePipe} from '../../pipe/translate/translate.pipe';
+import {typeFormEnumToken} from '../../tokens/type-form.token';
 
 @Component({
   selector: 'app-pokemon-form',
   standalone: true,
   templateUrl: './pokemon-form.component.html',
   styleUrl: './pokemon-form.component.scss',
-  imports: [LoaderComponent, PokemonTypeColorPipe, ReactiveFormsModule],
+  imports: [LoaderComponent, PokemonTypeColorPipe, ReactiveFormsModule, TranslatePipe],
 })
 export class PokemonFormComponent implements OnInit , AfterViewInit{
   pokemon: InputSignal<Pokemon> = input.required();
 
   private readonly router: Router = inject(Router);
   private readonly fb: FormBuilder = inject(FormBuilder);
-  private readonly typeForm: TypeFormEnum = inject(TYPE_FORM);
+  private readonly typeForm: TypeFormEnum = inject(typeFormEnumToken);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
   private readonly dataShared: DataSharedService = inject(DataSharedService);
   private readonly addController: AddedPokemonController = inject(AddedPokemonController);

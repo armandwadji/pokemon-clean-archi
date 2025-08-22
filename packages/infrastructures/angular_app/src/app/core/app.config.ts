@@ -1,14 +1,6 @@
-import {
-  ApplicationConfig,
-  inject,
-  InjectionToken,
-  provideAppInitializer,
-  provideZoneChangeDetection
-} from '@angular/core';
-import {PreloadAllModules, provideRouter, withComponentInputBinding, withPreloading} from '@angular/router';
-import {routes} from './app.routes';
+import {ApplicationConfig, inject} from '@angular/core';
 import {firstValueFrom} from 'rxjs';
-import {HttpClient as AngularHttpClient, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {HttpClient as AngularHttpClient} from '@angular/common/http';
 import {
   AddPokemonUseCase,
   DeletePokemonUseCase,
@@ -24,15 +16,11 @@ import {
   GetPokemonController,
   GetPokemonsController,
   HttpClient,
-  IPokemonDataProvider,
   PokemonDataProviderFactory
 } from '@pokemon/web-adapters';
-import {Config} from './shared/model/config.model';
 import {Init} from './init';
-
-
-const IHttpClient = new InjectionToken<HttpClient>('HttpClient');
-const IPokemonDataProviderInjectionToken = new InjectionToken<IPokemonDataProvider>('IPokemonDataProviderBoundary')
+import {IPokemonDataProviderToken} from '../shared/tokens/pokemon-dataprovider.token';
+import {IHttpClient} from '../shared/tokens/http-client.token';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -55,9 +43,9 @@ export const appConfig: ApplicationConfig = {
       deps: [AngularHttpClient]
     },
 
-    /************** DATA PROVIDERS **************/
+    /************** POKÉMONS DATA PROVIDERS **************/
     {
-      provide: IPokemonDataProviderInjectionToken,
+      provide: IPokemonDataProviderToken,
       useFactory: () => new PokemonDataProviderFactory(inject(Init).getConfig().pokemonDataProviderVersion)
     },
 
@@ -65,7 +53,7 @@ export const appConfig: ApplicationConfig = {
     {
       provide: GetPokemonsUseCase,
       useFactory: (pokemonRepository: IPokemonDataProviderBoundary): GetPokemonsUseCase => new GetPokemonsUseCase(pokemonRepository),
-      deps: [IPokemonDataProviderInjectionToken]
+      deps: [IPokemonDataProviderToken]
     },
     {
       provide: GetPokemonsController,
@@ -77,7 +65,7 @@ export const appConfig: ApplicationConfig = {
     {
       provide: GetPokemonUseCase,
       useFactory: (pokemonRepository: IPokemonDataProviderBoundary): GetPokemonUseCase => new GetPokemonUseCase(pokemonRepository),
-      deps: [IPokemonDataProviderInjectionToken]
+      deps: [IPokemonDataProviderToken]
     },
     {
       provide: GetPokemonController,
@@ -89,7 +77,7 @@ export const appConfig: ApplicationConfig = {
     {
       provide: AddPokemonUseCase,
       useFactory: (pokemonRepository: IPokemonDataProviderBoundary): AddPokemonUseCase => new AddPokemonUseCase(pokemonRepository),
-      deps: [IPokemonDataProviderInjectionToken]
+      deps: [IPokemonDataProviderToken]
     },
     {
       provide: AddedPokemonController,
@@ -101,7 +89,7 @@ export const appConfig: ApplicationConfig = {
     {
       provide: UpdatePokemonUseCase,
       useFactory: (pokemonRepository: IPokemonDataProviderBoundary): UpdatePokemonUseCase => new UpdatePokemonUseCase(pokemonRepository),
-      deps: [IPokemonDataProviderInjectionToken]
+      deps: [IPokemonDataProviderToken]
     },
     {
       provide: EditPokemonController,
@@ -113,21 +101,12 @@ export const appConfig: ApplicationConfig = {
     {
       provide: DeletePokemonUseCase,
       useFactory: (pokemonRepository: IPokemonDataProviderBoundary): DeletePokemonUseCase => new DeletePokemonUseCase(pokemonRepository),
-      deps: [IPokemonDataProviderInjectionToken]
+      deps: [IPokemonDataProviderToken]
     },
     {
       provide: DeletePokemonController,
       useFactory: (editPokemonUseCase: DeletePokemonUseCase): DeletePokemonController => new DeletePokemonController(editPokemonUseCase),
       deps: [DeletePokemonUseCase]
     },
-
-    provideAppInitializer((): Promise<Config> => inject(Init).fetchConfig()),
-    provideHttpClient(withInterceptorsFromDi()),
-    provideZoneChangeDetection({eventCoalescing: true}),
-    provideRouter(
-      routes,
-      withPreloading(PreloadAllModules),
-      withComponentInputBinding()
-    )
   ]
 };

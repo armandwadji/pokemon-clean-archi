@@ -3,11 +3,14 @@ import {Pokemon} from '@pokemon/domain';
 import {GetPokemonController, PokemonPresenterVM} from '@pokemon/web-adapters';
 import {inject} from '@angular/core';
 import {from, map} from 'rxjs';
+import {NGXLogger} from 'ngx-logger';
 
 export const pokemonResolver: ResolveFn<MaybeAsync<Pokemon>> = (route: ActivatedRouteSnapshot): MaybeAsync<Pokemon> => {
   const controller: GetPokemonController = inject(GetPokemonController);
+  const logger: NGXLogger = inject(NGXLogger);
   const id = route.paramMap.get('id') as string;
   if (!id) {
+    logger.error('Pokemon ID is required for the resolver');
     throw new Error('Pokemon ID is required for the resolver');
   }
   return from(controller.getPokemon(id))

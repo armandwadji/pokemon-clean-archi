@@ -1,5 +1,5 @@
 @if (pokemon() !== undefined) {
-  <h2 class="center">Editer {{ pokemon().name }}</h2>
+  <h2 class="center">{{"details.editBtn" | translate | titlecase}} {{ pokemon().name }}</h2>
   <p class="center">
     <img [src]="pokemon().picture" alt="{{ pokemon().name }} picture" />
   </p>

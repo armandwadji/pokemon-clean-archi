@@ -2,13 +2,10 @@ import {Pokemon} from "@pokemon/domain/src/entities/Pokemon";
 import {Builder} from "builder-pattern";
 import {PokemonRepositoryInMemory} from "@pokemon/web-adapters";
 import {PokemonRequest} from "@pokemon/domain";
+import {POKEMONS} from "../../../../fixtures/mock-pokemon-list";
 
 
 describe('PokemonRepositoryInMemory', () => {
-    const stubPokemons: Pokemon[] = [
-        Builder<Pokemon>().name("Pikachu").id("1").build(),
-        Builder<Pokemon>().name("Carapuce").id("2").build(),
-    ]
 
     test("get pokemons", async () => {
         // Given
@@ -18,7 +15,7 @@ describe('PokemonRepositoryInMemory', () => {
         const pokemonsResponse: Pokemon[] = await pokemonRepository.getPokemons();
 
         // Then
-        expect(pokemonsResponse).toEqual(stubPokemons);
+        expect(pokemonsResponse).toEqual(POKEMONS);
     });
 
     test("get pokemon by id", async () => {
@@ -29,7 +26,7 @@ describe('PokemonRepositoryInMemory', () => {
         const pokemonResponse: Pokemon = await pokemonRepository.getPokemon("1");
 
         // Then
-        expect(pokemonResponse).toEqual(stubPokemons[0]);
+        expect(pokemonResponse).toEqual(POKEMONS[0]);
     });
 
     test("throw error when pokemon doesn't exist", () => {
@@ -37,10 +34,10 @@ describe('PokemonRepositoryInMemory', () => {
         const pokemonRepository = new PokemonRepositoryInMemory();
 
         // When
-        const request = () => pokemonRepository.getPokemon("999");
-
-        // Then
-        expect(request).toThrowError("999 doesn't exist in this repository");
+         pokemonRepository.getPokemon("999").catch((error: Error) => {
+            // Then
+            expect(error.message).toEqual("pokemon by id 999 doesn't exist in this repository");
+         });
     });
 
     test("add new pokemon", async () => {
@@ -60,7 +57,7 @@ describe('PokemonRepositoryInMemory', () => {
     test("delete pokemon", async () => {
         // Given
         const pokemonRepository = new PokemonRepositoryInMemory();
-        const pokemonToDelete: Pokemon = stubPokemons[0];
+        const pokemonToDelete: Pokemon = POKEMONS[0];
 
         // When
         await pokemonRepository.deletePokemon(pokemonToDelete.id);
@@ -68,6 +65,6 @@ describe('PokemonRepositoryInMemory', () => {
 
         // Then
         expect(pokemonsAfterDeletion).not.toContainEqual(pokemonToDelete);
-        expect(pokemonsAfterDeletion).toHaveLength(stubPokemons.length - 1);
+        expect(pokemonsAfterDeletion).toHaveLength(POKEMONS.length - 1);
     });
 });

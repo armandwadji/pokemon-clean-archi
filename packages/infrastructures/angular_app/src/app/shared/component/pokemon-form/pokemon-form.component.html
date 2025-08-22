@@ -5,7 +5,7 @@
         <div class="card-panel">
           <!-- Pokemon name -->
           <div class="form-group">
-            <label for="name">Nom</label>
+            <label for="name">{{"details.name" | translate}}</label>
             <input
               type="text"
               class="form-control"
@@ -40,7 +40,7 @@
 
           <!-- Pokemon hp -->
           <div class="form-group">
-            <label for="hp">Point de vie</label>
+            <label for="hp">{{"details.hp" | translate}}</label>
             <input
               type="number"
               class="form-control"
@@ -57,7 +57,7 @@
 
           <!-- Pokemon cp -->
           <div class="form-group">
-            <label for="cp">Dégâts</label>
+            <label for="cp">{{"details.cp" | translate}}</label>
             <input
               type="number"
               class="form-control"
@@ -74,7 +74,7 @@
 
           <!-- Pokemon types -->
           <form class="form-group">
-            <p>Types</p>
+            <p>{{"details.type" | translate}}</p>
             @for (type of types(); track type) {
               <p>
                 <label>
@@ -101,7 +101,7 @@
           <div class="divider"></div>
           <div class="section center">
             <button type="submit" class="waves-effect waves-light btn">
-              Valider
+              {{"details.validateBtn" | translate}}
             </button>
           </div>
         </div>

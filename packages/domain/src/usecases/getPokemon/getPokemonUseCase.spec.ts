@@ -1,5 +1,9 @@
 import {Builder, StrictBuilder} from "builder-pattern";
 import {GetPokemonUseCase, IPokemonDataProviderBoundary, Pokemon} from "@pokemon/domain";
+import {
+    InputGetPokemonValues,
+    OutputGetPokemonValues
+} from "../../ports/boundary/entrypoint/IGetPokemonEntryPointBoundary";
 
 describe("Get Pokemon Use Case", () => {
 
@@ -14,17 +18,27 @@ describe("Get Pokemon Use Case", () => {
             .created(new Date("2023-01-01T00:00:00Z"))
     }
 
-    test("display a pokemon", async () => {
+    it("display a pokemon", async () => {
         // Given
         const pokemonRepository: IPokemonDataProviderBoundary = Builder<IPokemonDataProviderBoundary>().getPokemon(() => Promise.resolve(
             StubPokemonBuilder().build()
         )).build();
+        const inputPokemonValues: InputGetPokemonValues = Builder<InputGetPokemonValues>().pokemonId("1").build();
         const useCase: GetPokemonUseCase = new GetPokemonUseCase(pokemonRepository);
 
         // When
-        useCase.execute("1").then(pokemon => {
+        useCase.execute(inputPokemonValues).then((outputGetPokemonValues: OutputGetPokemonValues) => {
             // Then
-            expect(pokemon).toEqual(expect.objectContaining({name: "Pikachu"}));
+            expect(outputGetPokemonValues.pokemon).toEqual(expect.objectContaining({name: "Pikachu"}));
         });
+    });
+
+    it("throws an error when repository fails to fetch pokemons", async () => {
+        const error = new Error("Repository error");
+        const pokemonRepository: IPokemonDataProviderBoundary = Builder<IPokemonDataProviderBoundary>().getPokemon(() => Promise.reject(error)).build();
+        const useCase: GetPokemonUseCase = new GetPokemonUseCase(pokemonRepository);
+        const inputPokemonValues: InputGetPokemonValues = Builder<InputGetPokemonValues>().pokemonId("1").build();
+
+        await expect(useCase.execute(inputPokemonValues)).rejects.toThrow("Repository error");
     });
 })

@@ -1,0 +1,17 @@
+{
+  "home": {
+    "title": "Bienvenue dans l'application Angular",
+    "description": "Ceci est une application Angular de démonstration pour la gestion des traductions."
+  },
+  "details": {
+    "name": "Nom",
+    "hp": "Points de vie",
+    "cp": "Dégâts",
+    "type": "Types",
+    "date": "Date de création",
+    "previousBtn": "retour",
+    "editBtn": "editer",
+    "deleteBtn": "supprimer",
+    "validateBtn": "valider"
+  }
+}

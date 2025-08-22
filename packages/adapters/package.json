@@ -5,8 +5,8 @@
   "license": "ISC",
   "version": "1.0.0",
   "description": "Adapters of pokemon clean architecture",
-  "main": "dist/adapters/src/index.js",
-  "types": "dist/adapters/src/index.d.ts",
+  "main": "src/index.ts",
+  "types": "src/index.d.ts",
   "files": [
     "dist/**/*"
   ],

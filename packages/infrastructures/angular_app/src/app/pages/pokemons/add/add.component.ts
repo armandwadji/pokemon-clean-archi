@@ -2,14 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {PokemonFormComponent} from '../../../shared/component/pokemon-form/pokemon-form.component';
 import {Pokemon} from '@pokemon/domain';
 import {Builder} from 'builder-pattern';
-import {TYPE_FORM, TypeFormEnum} from '../../../shared/model/enum/type-form.enum';
+import {TypeFormEnum} from '../../../shared/model/enum/type-form.enum';
+import {typeFormEnumToken} from '../../../shared/tokens/type-form.token';
 
 @Component({
   selector: 'app-add',
   standalone: true,
   imports: [PokemonFormComponent],
   templateUrl: './add.component.html',
-  providers:[{provide: TYPE_FORM, useValue : TypeFormEnum.CREATE}]
+  providers:[{provide: typeFormEnumToken, useValue : TypeFormEnum.CREATE}]
 })
 export class AddComponent implements OnInit {
   pokemon: Pokemon;

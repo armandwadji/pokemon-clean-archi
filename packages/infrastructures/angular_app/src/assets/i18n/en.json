@@ -1,0 +1,13 @@
+{
+  "details": {
+    "name": "Name",
+    "hp": "Hit points",
+    "cp": "Damage",
+    "type": "Types",
+    "date": "Creation date",
+    "previousBtn": "previous",
+    "editBtn": "edit",
+    "deleteBtn": "delete",
+    "validateBtn": "validate"
+  }
+}

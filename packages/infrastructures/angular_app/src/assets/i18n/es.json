@@ -1,0 +1,13 @@
+{
+  "details": {
+    "name": "Nombre",
+    "hp": "Puntos de vida",
+    "cp": "Daño",
+    "type": "Tipos",
+    "date": "Fecha de creación",
+    "previousBtn": "anterior",
+    "editBtn": "editar",
+    "deleteBtn": "eliminar",
+    "validateBtn": "validar"
+  }
+}

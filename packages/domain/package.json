@@ -5,8 +5,8 @@
   "license": "ISC",
   "version": "1.0.0",
   "description": "Domain of pokemon clean architecture app",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
+  "main": "src/index.ts",
+  "types": "src/index.d.ts",
   "files": [
     "dist/**/*"
   ],

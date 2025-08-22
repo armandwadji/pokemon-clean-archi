@@ -14,7 +14,7 @@ export class GetPokemonsUseCase extends UseCase<InputGetPokemonsValues, OutputGe
         super();
     }
     
-    override async execute(input: InputGetPokemonsValues): Promise<OutputGetPokemonsValues>  {
+    override async execute(input?: InputGetPokemonsValues): Promise<OutputGetPokemonsValues>  {
         return await this.pokemonRepository.getPokemons()
             .then((pokemons: Pokemon[]) => Builder<OutputGetPokemonsValues>().pokemons(pokemons).build());
     }

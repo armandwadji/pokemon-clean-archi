@@ -7,18 +7,20 @@
   "description": "Root of pokemon App",
   "scripts": {
     "test": "jest",
-    "angular": "npm start --prefix packages/infrastructures/angular_app"
+    "angular": "npm start --prefix packages/infrastructures/angular_app",
+    "react": "npm start --prefix packages/infrastructures/react_app"
   },
   "workspaces": [
     "packages/*",
-    "packages/infrastructures/angular_app"
+    "packages/adapters/*",
+    "packages/infrastructures/*"
   ],
   "devDependencies": {
     "@types/jest": "^29.5.14",
     "jest": "^29.7.0",
     "lerna": "8.2.2",
     "ts-jest": "^29.3.4",
-    "typescript": "^5.8.3"
+    "typescript": "~5.8.3"
   },
   "dependencies": {
     "tslib": "^2.8.1"
