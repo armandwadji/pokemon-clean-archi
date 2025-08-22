@@ -22,7 +22,7 @@ const config: Config = {
         '<rootDir>/packages/domain/jest.config.ts',
         '<rootDir>/packages/adapters/jest.config.ts',
         '<rootDir>/packages/infrastructures/angular_app/jest.config.ts',
-        // '<rootDir>/packages/infrastructures/react_app/jest.config.ts',
+        '<rootDir>/packages/infrastructures/react_app/jest.config.ts',
     ]
 }
 
