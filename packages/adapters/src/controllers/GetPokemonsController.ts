@@ -1,10 +1,7 @@
 import {PokemonsPresenterVM} from "../presenters/PokemonsPresenter";
 import {GetPokemonsUseCase} from "@pokemon/domain/src/usecases/getPokemons/getPokemonsUseCase";
 import {Pokemon} from "@pokemon/domain";
-import {
-    InputGetPokemonsValues,
-    OutputGetPokemonsValues
-} from "domain/src/ports/boundary/entrypoint/IGetPokemonsEntryPointBoundary";
+import {OutputGetPokemonsValues} from "domain/src/ports/boundary/entrypoint/IGetPokemonsEntryPointBoundary";
 import {Builder} from "builder-pattern";
 
 export class GetPokemonsController {
@@ -15,7 +12,7 @@ export class GetPokemonsController {
     }
 
     async getPokemons(): Promise<PokemonsPresenterVM> {
-        return this.getPokemonUseCase.execute(Builder<InputGetPokemonsValues>())
+        return this.getPokemonUseCase.execute()
             .then((outputPokemonsValues: OutputGetPokemonsValues) => {
                 this.pokemonsPresenterVM.pokemons = outputPokemonsValues.pokemons;
                 this.pokemonsPresenterVM.pokemonTypes = this.getPokemonTypeList(outputPokemonsValues.pokemons)

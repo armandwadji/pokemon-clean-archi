@@ -35,10 +35,10 @@ const PokemonForm: FunctionComponent<Props> = ({id, pokemon}) => {
         getPokemonsController.getPokemons().then((pokemonPresenter: PokemonsPresenterVM) => setTypes(pokemonPresenter.pokemonTypes ?? []));
     }, [getPokemonsController]);
 
-    //On définit la variable isAddForm qui nous permettra de savoir si nous somme en mode création de pokémon
+    //On définit la variable isAddForm qui nous permettra de savoir si nous sommes en mode création de pokémon
     const isAddForm = !id;
 
-    //On définit le hook qui va contenir les différentes informations du opkémon à éditer: name, hp, cp et types.
+    //On définit le hook qui va contenir les différentes informations du Pokémon à éditer: name, hp, cp et types.
     const [form, setForm] = useState<Form>({
         name: {value: pokemon.name, isValid: true},
         hp: {value: pokemon.hp, isValid: true},
@@ -193,17 +193,18 @@ const PokemonForm: FunctionComponent<Props> = ({id, pokemon}) => {
         const isFormValid: boolean = await validateForm();
 
         if (isFormValid) {
-            //On actualise les paramètre du pokémon édité
+            //On actualise les paramètres du pokémon
             pokemon.name = form.name.value;
             pokemon.hp = form.hp.value;
             pokemon.cp = form.cp.value;
             pokemon.types = form.types.value;
 
-            //Si nous ne sommes pas en mode édition (donc en mode création, on actualise la picture)
-            isAddForm && (pokemon.picture = form.picture.value);
-
-            //Si nous sommes en mode édition alors, on utilise updatePokemon sinon on utilise addPokemon
-            !isAddForm ? updatePokemon(pokemon) : addPokemon(pokemon);
+            if (isAddForm){
+                pokemon.picture = form.picture.value;
+                addPokemon(pokemon)
+            } else {
+                updatePokemon(pokemon);
+            }
         }
     };
 
@@ -227,8 +228,6 @@ const PokemonForm: FunctionComponent<Props> = ({id, pokemon}) => {
 
                         <div className='card-stacked'>
                             <div className='card-content'>
-                                {/* La création d'une image ne s'affiche que si nous sommes en mode création d'un pokémon */}
-
                                 {/* Pokemon picture */}
                                 {isAddForm && (
                                     <div className='form-group'>

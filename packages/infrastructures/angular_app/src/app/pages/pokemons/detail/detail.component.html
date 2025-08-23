@@ -52,20 +52,25 @@
               (click)="goToPokemonList()"
               (keydown)="goToPokemonList()"
               tabindex="0"
-              >{{"details.previousBtn" | translate}}</a
-            >
+              class="btn-floating"
+              ><i class='material-icons'>arrow_back</i>
+            </a>
             <a
               (click)="goToEditPokemon(pokemon())"
               (keydown)="goToEditPokemon(pokemon())"
               tabindex="1"
-              >{{"details.editBtn" | translate}}</a
-            >
+              class="btn-floating"
+              style="margin-left: 1rem"
+              ><i class='material-icons'>edit</i>
+            </a>
             <a
               (click)="deletePokemon(pokemon())"
               (keydown)="deletePokemon(pokemon())"
               tabindex="2"
-              >{{"details.deleteBtn" | translate}}</a
-            >
+              class="btn-floating"
+              style="margin-left: 1rem"
+              ><i class='material-icons'>delete</i>
+            </a>
           </div>
         </div>
       </div>
