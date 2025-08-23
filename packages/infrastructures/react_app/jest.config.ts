@@ -2,7 +2,6 @@ import type {Config} from 'jest';
 
 const config: Config = {
     clearMocks: true,
-    collectCoverage: true,
     collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts',
         '!**/vendor/**'],
     transform: {

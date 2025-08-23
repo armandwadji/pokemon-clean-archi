@@ -6,24 +6,24 @@ import {PokemonsPresenterVM} from "@pokemon/web-adapters";
 import {DataProviderContext, dataProviderContextType} from "../context/DataProviderContext";
 import {routesName} from "../utils/routing.config";
 
-type Props = {
+interface Props {
     id: string | undefined;
     pokemon: PokemonRequest;
-};
+}
 
-type Field = {
-    value?: any; //Any veut dire n'importe quel type de valeur
-    error?: string; //Le ? veut dire que l'attribut est optionelle
+interface Field {
+    value?: any;
+    error?: string;
     isValid?: boolean;
-};
+}
 
-type Form = {
+interface Form {
     picture: Field;
     name: Field;
     hp: Field;
     cp: Field;
     types: Field;
-};
+}
 
 const PokemonForm: FunctionComponent<Props> = ({id, pokemon}) => {
     const {getPokemonsController, updatePokemonController, addPokemonController, deletePokemonController} = useContext( DataProviderContext) as dataProviderContextType;
@@ -36,7 +36,7 @@ const PokemonForm: FunctionComponent<Props> = ({id, pokemon}) => {
     }, [getPokemonsController]);
 
     //On définit la variable isAddForm qui nous permettra de savoir si nous somme en mode création de pokémon
-    const isAddForm: boolean = !id;
+    const isAddForm = !id;
 
     //On définit le hook qui va contenir les différentes informations du opkémon à éditer: name, hp, cp et types.
     const [form, setForm] = useState<Form>({
@@ -101,11 +101,7 @@ const PokemonForm: FunctionComponent<Props> = ({id, pokemon}) => {
             return false;
         }
 
-        if (form.types.value.length >= 3 && !hasType(type)) {
-            return false;
-        }
-
-        return true;
+        return !(form.types.value.length >= 3 && !hasType(type));
     };
 
     /**

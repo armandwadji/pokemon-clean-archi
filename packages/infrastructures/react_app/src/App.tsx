@@ -8,13 +8,17 @@ import {routesName} from "./utils/routing.config";
 import PageTitleWrapper from "./pages/page-title-wrapper";
 import PageNotFound from "./pages/page-not-found";
 
-type AppProps = {
+interface AppProps {
     path: string;
     element: JSX.Element;
 }
 
 function App() {
     const appRoutes: AppProps[] = [
+        {
+            path: `/`,
+            element: <PageTitleWrapper title={routesName.pokemon.children.list.title}><PokemonList/></PageTitleWrapper>
+        },
         {
             path: `/${routesName.pokemon.path}`,
             element: <PageTitleWrapper title={routesName.pokemon.children.list.title}><PokemonList/></PageTitleWrapper>

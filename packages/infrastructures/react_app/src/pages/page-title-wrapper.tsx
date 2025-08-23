@@ -1,9 +1,9 @@
 import {useEffect} from "react";
 
-type PageProps = {
+interface PageProps {
     title: string;
     children: React.ReactNode;
-};
+}
 
 function PageTitleWrapper({ title, children }: PageProps) {
     useEffect(() => {

@@ -19,7 +19,7 @@ export interface IPokemonDataProvider extends IDataprovider{
  * Decorator permettant d'enregistrer les instances de IPokemonDataProvider
  * @param ctor
  */
-export function RegisterPokemonDataProvider<T extends { new(...args: any[]): IPokemonDataProviderBoundary }>(ctor: T) {
+export function RegisterPokemonDataProvider<T extends new(...args: any[]) => IPokemonDataProviderBoundary>(ctor: T): T {
     PokemonDataProviderRegistry.register(ctor);
     return ctor;
 }

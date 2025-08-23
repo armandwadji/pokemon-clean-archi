@@ -15,7 +15,7 @@ import {
     UpdatePokemonUseCase
 } from "@pokemon/domain";
 
-export type dataProviderContextType = {
+export interface dataProviderContextType {
     getPokemonsController: GetPokemonsController;
     getPokemonController: GetPokemonController;
     updatePokemonController: EditPokemonController;
@@ -23,7 +23,7 @@ export type dataProviderContextType = {
     deletePokemonController: DeletePokemonController;
 }
 
-type dataProviderContextProps = {
+interface dataProviderContextProps {
     children: React.ReactNode
 }
 

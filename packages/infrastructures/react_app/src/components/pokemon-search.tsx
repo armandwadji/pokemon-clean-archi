@@ -36,7 +36,7 @@ const PokemonSearch: FunctionComponent = () => {
                         </div>
                         <div className='collection'>
                             {!pokemons
-                                ? <a className="collection-item">No result match</a>
+                                ? <p className="collection-item">No result match</p>
                                 : pokemons.map((pokemon) => (
                                     <Link key={pokemon.id} to={`/${routesName.pokemon.children.detail.fullPath}/${pokemon.id}`} className='collection-item'>
                                         {pokemon.name}

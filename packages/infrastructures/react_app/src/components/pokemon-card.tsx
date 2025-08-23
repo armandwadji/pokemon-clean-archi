@@ -5,10 +5,10 @@ import {NavigateFunction, useNavigate} from "react-router";
 import {Pokemon} from "@pokemon/domain/src";
 import {routesName} from "../utils/routing.config";
 
-type Props = {
+interface Props {
     pokemon: Pokemon;
     borderColor?: string;
-};
+}
 const PokemonCard: FunctionComponent<Props> = ({pokemon, borderColor = '#009688'}: Props) => {
     const {id, name, picture, types} = pokemon;
 
