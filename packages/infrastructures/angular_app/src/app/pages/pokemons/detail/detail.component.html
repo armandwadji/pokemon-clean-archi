@@ -53,12 +53,14 @@
               (keydown)="goToPokemonList()"
               tabindex="0"
               class="btn-floating"
+              id="previous-button"
               ><i class='material-icons'>arrow_back</i>
             </a>
             <a
               (click)="goToEditPokemon(pokemon())"
               (keydown)="goToEditPokemon(pokemon())"
               tabindex="1"
+              id="edit-button"
               class="btn-floating"
               style="margin-left: 1rem"
               ><i class='material-icons'>edit</i>
@@ -67,6 +69,7 @@
               (click)="deletePokemon(pokemon())"
               (keydown)="deletePokemon(pokemon())"
               tabindex="2"
+              id="delete-button"
               class="btn-floating"
               style="margin-left: 1rem"
               ><i class='material-icons'>delete</i>

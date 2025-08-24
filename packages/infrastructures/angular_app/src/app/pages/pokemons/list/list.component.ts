@@ -3,7 +3,7 @@ import {toSignal} from '@angular/core/rxjs-interop';
 import {DatePipe} from '@angular/common';
 import {Router} from '@angular/router';
 import {GetPokemonsController, PokemonsPresenterVM} from '@pokemon/web-adapters';
-import {from} from 'rxjs';
+import {from, tap} from 'rxjs';
 import {Pokemon} from '@pokemon/domain';
 import {PokemonTypeColorPipe} from '../../../shared/pipe/type-color/pokemon-type-color.pipe';
 import {BorderCardDirective} from '../../../shared/directive/border-card.directive';
@@ -29,12 +29,11 @@ export class ListComponent {
   private readonly controller: GetPokemonsController = inject(GetPokemonsController);
 
   pokemonList: Signal<PokemonsPresenterVM> = toSignal(
-    from(this.controller.getPokemons()),
+    from(this.controller.getPokemons()).pipe(tap((pokemonsPresenterVM: PokemonsPresenterVM) => this.dataShared.pokemonTypes = pokemonsPresenterVM.pokemonTypes ?? [])),
     {initialValue: {pokemons: [], pokemonTypes: [], pokemonsSearch: undefined}},
   );
 
   goToPokemon(pokemon: Pokemon): void {
-    this.dataShared.pokemonTypes = this.pokemonList().pokemonTypes ?? [];
     this.router.navigate([
       routesName.pokemon.children.detail.fullPath,
       pokemon.id,
@@ -42,7 +41,6 @@ export class ListComponent {
   }
 
   goToAddPokemon() {
-    this.dataShared.pokemonTypes = this.pokemonList().pokemonTypes ?? [];
     this.router.navigate([routesName.pokemon.children.add.fullPath]);
   }
 }
