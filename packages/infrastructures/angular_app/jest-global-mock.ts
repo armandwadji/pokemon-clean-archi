@@ -2,7 +2,7 @@ declare let global: any;
 
 global.CSS = {
   supports: (k: any, v: any) => false,
-}
+};
 
 global.ResizeObserver = jest.fn().mockImplementation(() => ({
   observe: jest.fn(),

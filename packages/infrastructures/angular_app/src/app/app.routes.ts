@@ -1,6 +1,6 @@
-import {Routes} from '@angular/router';
-import {routesName} from './app-routing-config';
-import {pokemonResolver} from './shared/resolver/pokemon.resolver';
+import { Routes } from '@angular/router';
+import { routesName } from './app-routing-config';
+import { pokemonResolver } from './shared/resolver/pokemon.resolver';
 
 export const routes: Routes = [
   {

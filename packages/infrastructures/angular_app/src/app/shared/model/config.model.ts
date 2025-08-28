@@ -12,7 +12,7 @@ export class Config {
     this._keepAliveIdle = config?.keepAliveIdle;
     this._keepAliveTimeout = config?.keepAliveTimeout;
     this._apiUrl = config?.apiUrl;
-    this._pokemonDataProviderVersion = config?.pokemonDataProviderVersion
+    this._pokemonDataProviderVersion = config?.pokemonDataProviderVersion;
   }
 
   get keepAliveActive(): boolean {

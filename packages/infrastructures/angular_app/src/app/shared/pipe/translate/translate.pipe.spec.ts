@@ -1,7 +1,7 @@
-import {TranslatePipe} from './translate.pipe';
-import {DotNotation} from '../../model/translate.model';
-import {TestBed} from '@angular/core/testing';
-import {TranslateService} from '../../service/translate/translate.service';
+import { TranslatePipe } from './translate.pipe';
+import { DotNotation } from '../../model/translate.model';
+import { TestBed } from '@angular/core/testing';
+import { TranslateService } from '../../service/translate/translate.service';
 
 describe('TranslatePipe', () => {
   let translateService: jest.Mocked<TranslateService>;

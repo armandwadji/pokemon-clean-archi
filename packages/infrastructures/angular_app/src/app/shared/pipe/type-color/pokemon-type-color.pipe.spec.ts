@@ -1,4 +1,4 @@
-import {PokemonTypeColorPipe} from './pokemon-type-color.pipe';
+import { PokemonTypeColorPipe } from './pokemon-type-color.pipe';
 
 describe('PokemonTypeColorPipe', () => {
   let pipe: PokemonTypeColorPipe;
@@ -25,8 +25,11 @@ describe('PokemonTypeColorPipe', () => {
     { type: 'Combat', expected: 'deep-orange' },
     { type: 'Inconnu', expected: 'grey' },
     { type: null, expected: 'grey' },
-    { type: undefined, expected: 'grey' }
-  ])('should return for type $type correct color $expected', ({ type, expected }) => {
-    expect(pipe.transform(type as string)).toBe(`chip ${expected}`);
-  });
+    { type: undefined, expected: 'grey' },
+  ])(
+    'should return for type $type correct color $expected',
+    ({ type, expected }) => {
+      expect(pipe.transform(type as string)).toBe(`chip ${expected}`);
+    },
+  );
 });

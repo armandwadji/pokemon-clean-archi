@@ -11,25 +11,25 @@
             <table class="bordered striped">
               <tbody>
                 <tr>
-                  <td>{{"details.name" | translate}}</td>
+                  <td>{{ "details.name" | translate }}</td>
                   <td>
                     <strong>{{ pokemon().name }}</strong>
                   </td>
                 </tr>
                 <tr>
-                  <td>{{"details.hp" | translate}}</td>
+                  <td>{{ "details.hp" | translate }}</td>
                   <td>
                     <strong>{{ pokemon().hp }}</strong>
                   </td>
                 </tr>
                 <tr>
-                  <td>{{"details.cp" | translate}}</td>
+                  <td>{{ "details.cp" | translate }}</td>
                   <td>
                     <strong>{{ pokemon().cp }}</strong>
                   </td>
                 </tr>
                 <tr>
-                  <td>{{"details.type" | translate}}</td>
+                  <td>{{ "details.type" | translate }}</td>
                   <td>
                     @for (type of pokemon().types; track type) {
                       <span class="{{ type | pokemonTypeColor }}">{{
@@ -39,7 +39,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>{{"details.date" | translate}}</td>
+                  <td>{{ "details.date" | translate }}</td>
                   <td>
                     <em>{{ pokemon().created | date: "dd/MM/yyyy" }}</em>
                   </td>
@@ -54,7 +54,7 @@
               tabindex="0"
               class="btn-floating"
               id="previous-button"
-              ><i class='material-icons'>arrow_back</i>
+              ><i class="material-icons">arrow_back</i>
             </a>
             <a
               (click)="goToEditPokemon(pokemon())"
@@ -63,7 +63,7 @@
               id="edit-button"
               class="btn-floating"
               style="margin-left: 1rem"
-              ><i class='material-icons'>edit</i>
+              ><i class="material-icons">edit</i>
             </a>
             <a
               (click)="deletePokemon(pokemon())"
@@ -72,7 +72,7 @@
               id="delete-button"
               class="btn-floating"
               style="margin-left: 1rem"
-              ><i class='material-icons'>delete</i>
+              ><i class="material-icons">delete</i>
             </a>
           </div>
         </div>

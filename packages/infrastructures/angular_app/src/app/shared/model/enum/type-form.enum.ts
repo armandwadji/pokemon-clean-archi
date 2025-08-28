@@ -1,5 +1,4 @@
-export enum TypeFormEnum{
+export enum TypeFormEnum {
   CREATE = 'CREATE',
-  EDIT = "EDIT"
+  EDIT = 'EDIT',
 }
-

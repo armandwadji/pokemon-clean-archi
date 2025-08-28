@@ -1,16 +1,16 @@
-import {Pokemon} from "../../../entities/Pokemon";
-import {PokemonRequest} from "../../request/PokemonRequest";
+import { Pokemon } from "../../../entities/Pokemon";
+import { PokemonRequest } from "../../request/PokemonRequest";
 
 export interface IPokemonDataProviderBoundary {
-    getPokemons(): Promise<Pokemon[]>
+  getPokemons(): Promise<Pokemon[]>;
 
-    getPokemon(pokemon: string): Promise<Pokemon>
+  getPokemon(pokemon: string): Promise<Pokemon>;
 
-    addPokemon(pokemon: PokemonRequest): Promise<Pokemon>
+  addPokemon(pokemon: PokemonRequest): Promise<Pokemon>;
 
-    updatePokemon(id: string, pokemon: PokemonRequest): Promise<Pokemon>
+  updatePokemon(id: string, pokemon: PokemonRequest): Promise<Pokemon>;
 
-    deletePokemon(pokemon: string): Promise<void>;
+  deletePokemon(pokemon: string): Promise<void>;
 
-    searchPokemonByName(search: string): Promise<Pokemon[] | undefined>;
+  searchPokemonByName(search: string): Promise<Pokemon[] | undefined>;
 }

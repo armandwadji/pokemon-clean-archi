@@ -1,33 +1,32 @@
-import type {Config} from 'jest';
+import type { Config } from "jest";
 
 const config: Config = {
-    clearMocks: true,
-    collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts',
-        '!**/vendor/**'],
-    transform: {
-        ".(ts|tsx)": "ts-jest"
-    },
+  clearMocks: true,
+  collectCoverageFrom: ["src/**/*.{ts,tsx}", "!src/**/*.d.ts", "!**/vendor/**"],
+  transform: {
+    ".(ts|tsx)": "ts-jest",
+  },
 
-    coverageDirectory: "coverage",
-    setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
+  coverageDirectory: "coverage",
+  setupFilesAfterEnv: ["<rootDir>/setup-jest.ts"],
 
-    moduleNameMapper: {
-        "@pokemon/domain": "<rootDir>/../../domain/src",
-        "@pokemon/web-adapters": "<rootDir>/../../adapters/src",
-        '^src/(.*)$': '<rootDir>/src/$1',
-    },
+  moduleNameMapper: {
+    "@pokemon/domain": "<rootDir>/../../domain/src",
+    "@pokemon/web-adapters": "<rootDir>/../../adapters/src",
+    "^src/(.*)$": "<rootDir>/src/$1",
+  },
 
-    testEnvironment: "jsdom",
+  testEnvironment: "jsdom",
 
-    coveragePathIgnorePatterns: [
-        "/node_modules/",
-        "/coverage",
-        "package.json",
-        "package-lock.json",
-        "reportWebVitals.ts",
-        "setup-jest.ts",
-        "index.tsx"
-    ],
-}
+  coveragePathIgnorePatterns: [
+    "/node_modules/",
+    "/coverage",
+    "package.json",
+    "package-lock.json",
+    "reportWebVitals.ts",
+    "setup-jest.ts",
+    "index.tsx",
+  ],
+};
 
 export default config;

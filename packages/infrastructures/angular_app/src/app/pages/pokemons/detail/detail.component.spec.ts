@@ -1,25 +1,24 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {DetailComponent} from './detail.component';
-import {Pokemon} from '@pokemon/domain';
-import {DeletePokemonController} from '@pokemon/web-adapters';
-import {Router} from '@angular/router';
-import {By} from '@angular/platform-browser';
-import {routesName} from '../../../app-routing-config';
-import {of} from 'rxjs';
+import { DetailComponent } from './detail.component';
+import { Pokemon } from '@pokemon/domain';
+import { DeletePokemonController } from '@pokemon/web-adapters';
+import { Router } from '@angular/router';
+import { By } from '@angular/platform-browser';
+import { routesName } from '../../../app-routing-config';
+import { of } from 'rxjs';
 
 describe('DetailComponent', () => {
   let component: DetailComponent;
   let fixture: ComponentFixture<DetailComponent>;
   let deletePokemonControllerMock: jest.Mocked<DeletePokemonController>;
   let routerMock: jest.Mocked<Router>;
-  const pokemonMock: Pokemon = {id: '1', name: 'Pikachu'} as Pokemon;
+  const pokemonMock: Pokemon = { id: '1', name: 'Pikachu' } as Pokemon;
 
   beforeEach(async () => {
-
     deletePokemonControllerMock = {
       delete: jest.fn().mockReturnValue(of(undefined)),
-    } as any
+    } as any;
 
     routerMock = {
       navigate: jest.fn(),
@@ -27,16 +26,19 @@ describe('DetailComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [DetailComponent],
-      providers:[
+      providers: [
         { provide: Router, useValue: routerMock },
-        { provide: DeletePokemonController, useValue: deletePokemonControllerMock },
-      ]
+        {
+          provide: DeletePokemonController,
+          useValue: deletePokemonControllerMock,
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DetailComponent);
     component = fixture.componentInstance;
 
-    fixture.componentRef.setInput('pokemon', pokemonMock)
+    fixture.componentRef.setInput('pokemon', pokemonMock);
     fixture.detectChanges();
   });
 

@@ -1,11 +1,11 @@
-import React, {FunctionComponent} from "react";
-import {Link, useParams} from "react-router-dom";
+import React, { FunctionComponent } from "react";
+import { Link, useParams } from "react-router-dom";
 import Loader from "../components/loader";
-import {formatType} from "../utils/formatType/formatType";
-import {formatDate} from "../utils/formatDate/formatDate";
+import { formatType } from "../utils/formatType/formatType";
+import { formatDate } from "../utils/formatDate/formatDate";
 import usePokemon from "../hooks/pokemonHook";
-import {Pokemon} from "@pokemon/domain";
-import {routesName} from "../utils/routing.config";
+import { Pokemon } from "@pokemon/domain";
+import { routesName } from "../utils/routing.config";
 
 const PokemonsDetail: FunctionComponent = () => {
   const { id } = useParams();
@@ -14,19 +14,26 @@ const PokemonsDetail: FunctionComponent = () => {
   return (
     <div>
       {pokemon ? (
-        <div className='row'>
-          <div className='col s12 m8 offset-m2'>
-            <h2 className='header center'>{pokemon.name}</h2>
-            <div className='card hoverable'>
-              <div className='card-image'>
-                <img src={pokemon.picture} alt={pokemon.name} style={{ width: "250px", margin: "0 auto" }} />
-                <Link to={`/pokemons/edit/${pokemon.id}`} className='btn btn-floating halfway-fab waves-effect waves-light'>
-                  <i className='material-icons'>edit</i>
+        <div className="row">
+          <div className="col s12 m8 offset-m2">
+            <h2 className="header center">{pokemon.name}</h2>
+            <div className="card hoverable">
+              <div className="card-image">
+                <img
+                  src={pokemon.picture}
+                  alt={pokemon.name}
+                  style={{ width: "250px", margin: "0 auto" }}
+                />
+                <Link
+                  to={`/pokemons/edit/${pokemon.id}`}
+                  className="btn btn-floating halfway-fab waves-effect waves-light"
+                >
+                  <i className="material-icons">edit</i>
                 </Link>
               </div>
-              <div className='card-stacked'>
-                <div className='card-content'>
-                  <table className='bordered striped'>
+              <div className="card-stacked">
+                <div className="card-content">
+                  <table className="bordered striped">
                     <tbody>
                       <tr>
                         <td>Nom</td>
@@ -63,7 +70,7 @@ const PokemonsDetail: FunctionComponent = () => {
                     </tbody>
                   </table>
                 </div>
-                <div className='card-action'>
+                <div className="card-action">
                   <Link to={`/${routesName.pokemon.path}`}>Retour</Link>
                 </div>
               </div>
@@ -71,7 +78,7 @@ const PokemonsDetail: FunctionComponent = () => {
           </div>
         </div>
       ) : (
-        <h4 className='center'>
+        <h4 className="center">
           <Loader />
         </h4>
       )}

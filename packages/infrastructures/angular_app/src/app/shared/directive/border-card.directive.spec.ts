@@ -1,5 +1,5 @@
-import {BorderCardDirective} from './border-card.directive';
-import {ElementRef} from '@angular/core';
+import { BorderCardDirective } from './border-card.directive';
+import { ElementRef } from '@angular/core';
 
 describe('BorderCardDirective', () => {
   let directive: BorderCardDirective;
@@ -11,9 +11,9 @@ describe('BorderCardDirective', () => {
         style: {
           border: '',
           height: '',
-          cursor: ''
-        }
-      }
+          cursor: '',
+        },
+      },
     } as ElementRef;
     directive = new BorderCardDirective(mockElementRef);
   });

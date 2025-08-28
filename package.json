@@ -7,8 +7,19 @@
   "description": "Root of pokemon App",
   "scripts": {
     "test": "jest",
+    "test:coverage": "npm run test --coverage",
+    "eslint": "npx eslint . --ext js,jsx,ts,tsx --fix",
+    "prettier": "prettier --write ./packages",
+    "prettier:check": "prettier --check ./packages",
+    "pretty-quick": "npx pretty-quick --staged",
+    "compodoc": "npx compodoc -p tsconfig.doc.json -n \"pokedex-app documentation\"",
+    "compodoc:serve": "npx compodoc -s",
+    "commitlint": "commitlint --edit",
+    "compodoc-coverage-test": "npx compodoc -p tsconfig.doc.json --coverageMinimumPerFile 25",
+    "precommit": "npm run pretty-quick && npm run prettier && npm run prettier:check && npm run test",
     "angular": "npm start --prefix packages/infrastructures/angular_app",
-    "react": "npm start --prefix packages/infrastructures/react_app"
+    "react": "npm start --prefix packages/infrastructures/react_app",
+    "prepare": "husky"
   },
   "workspaces": [
     "packages/*",
@@ -16,11 +27,20 @@
     "packages/infrastructures/*"
   ],
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@compodoc/compodoc": "^1.1.26",
+    "@eslint/js": "^9.33.0",
     "@types/jest": "^29.5.14",
+    "eslint": "^9.33.0",
+    "husky": "^9.1.7",
     "jest": "^29.7.0",
     "lerna": "8.2.2",
+    "prettier": "^3.6.2",
+    "pretty-quick": "^4.2.2",
     "ts-jest": "^29.3.4",
-    "typescript": "~5.8.3"
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.40.0"
   },
   "dependencies": {
     "tslib": "^2.8.1"

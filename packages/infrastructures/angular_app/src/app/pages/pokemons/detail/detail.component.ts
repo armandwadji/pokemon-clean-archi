@@ -1,14 +1,20 @@
-import {Component, DestroyRef, inject, input, InputSignal,} from '@angular/core';
-import {PokemonTypeColorPipe} from '../../../shared/pipe/type-color/pokemon-type-color.pipe';
-import {DatePipe} from '@angular/common';
-import {LoaderComponent} from '../../../shared/component/loader/loader.component';
-import {routesName} from '../../../app-routing-config';
-import {Router} from '@angular/router';
-import {Pokemon} from '@pokemon/domain';
-import {DeletePokemonController} from '@pokemon/web-adapters';
-import {from} from 'rxjs';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {TranslatePipe} from '../../../shared/pipe/translate/translate.pipe';
+import {
+  Component,
+  DestroyRef,
+  inject,
+  input,
+  InputSignal,
+} from '@angular/core';
+import { PokemonTypeColorPipe } from '../../../shared/pipe/type-color/pokemon-type-color.pipe';
+import { DatePipe } from '@angular/common';
+import { LoaderComponent } from '../../../shared/component/loader/loader.component';
+import { routesName } from '../../../app-routing-config';
+import { Router } from '@angular/router';
+import { Pokemon } from '@pokemon/domain';
+import { DeletePokemonController } from '@pokemon/web-adapters';
+import { from } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslatePipe } from '../../../shared/pipe/translate/translate.pipe';
 
 @Component({
   selector: 'app-detail',
@@ -20,8 +26,9 @@ export class DetailComponent {
 
   private readonly router: Router = inject(Router);
   private destroyRef: DestroyRef = inject(DestroyRef);
-  private readonly controller: DeletePokemonController = inject(DeletePokemonController);
-
+  private readonly controller: DeletePokemonController = inject(
+    DeletePokemonController,
+  );
 
   goToPokemonList() {
     this.router.navigate([routesName.pokemon.path]);
@@ -43,7 +50,7 @@ export class DetailComponent {
         },
         error: (err) => {
           console.error('Error deleting pokemon:', err);
-        }
-      })
+        },
+      });
   }
 }

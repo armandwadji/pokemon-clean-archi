@@ -1,12 +1,12 @@
-import {Config} from '../shared/model/config.model';
-import {HttpClient} from '@angular/common/http';
-import {inject, Injectable} from '@angular/core';
-import {firstValueFrom, map, tap} from 'rxjs';
+import { Config } from '../shared/model/config.model';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { firstValueFrom, map, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class Init{
+export class Init {
   private readonly http: HttpClient = inject(HttpClient);
   // private readonly keepAliveService: KeepAliveService = inject(KeepAliveService);
 
@@ -20,11 +20,11 @@ export class Init{
     return this.config;
   }
 
-  fetchConfig(): Promise<Config>{
+  fetchConfig(): Promise<Config> {
     return firstValueFrom(
       this.http.get(this.configPath).pipe(
-        map((config : any) => new Config(config) ),
-        tap((config: Config) => this.config = config),
+        map((config: any) => new Config(config)),
+        tap((config: Config) => (this.config = config)),
         // tap((config: Config) => {
         //   if (config.keepAliveActive && this.dataShared.isLoggedIn && environment.production) {
         //             this.keepAliveService.KeepAlive(config);

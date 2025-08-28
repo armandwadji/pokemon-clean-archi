@@ -1,11 +1,13 @@
-import {Injectable, signal, WritableSignal} from '@angular/core';
-import {ArgTranslate, NestedObjects} from '../../model/translate.model';
+import { Injectable, signal, WritableSignal } from '@angular/core';
+import { ArgTranslate, NestedObjects } from '../../model/translate.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TranslateService {
-  private _translation: WritableSignal<NestedObjects> = signal<NestedObjects>({});
+  private _translation: WritableSignal<NestedObjects> = signal<NestedObjects>(
+    {},
+  );
   private cache: NestedObjects = {};
 
   get translation(): NestedObjects {
@@ -18,7 +20,6 @@ export class TranslateService {
 
   translate(key: string, args?: ArgTranslate[]): string | NestedObjects {
     if (this.cache[key] && !args) return this.cache[key];
-
 
     const keys = key.split('.');
     let value: NestedObjects | string = this.translation;
@@ -37,11 +38,13 @@ export class TranslateService {
         value = value.toString().replace(
           placeholder,
           arg.isCurrency
-            ? (arg.value ?? '').toLocaleString('fr-FR', {style: 'currency', currency: 'EUR'})
-            : (arg.value ?? '').toString()
+            ? (arg.value ?? '').toLocaleString('fr-FR', {
+                style: 'currency',
+                currency: 'EUR',
+              })
+            : (arg.value ?? '').toString(),
         ) as unknown as NestedObjects;
-
-      })
+      });
     }
 
     return value;

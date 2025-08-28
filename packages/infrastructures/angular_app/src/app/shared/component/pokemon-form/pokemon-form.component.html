@@ -5,7 +5,7 @@
         <div class="card-panel">
           <!-- Pokemon name -->
           <div class="form-group">
-            <label for="name">{{"details.name" | translate}}</label>
+            <label for="name">{{ "details.name" | translate }}</label>
             <input
               type="text"
               class="form-control"
@@ -13,11 +13,11 @@
               autocomplete="false"
               formControlName="name"
             />
-              @if (pokemonErrors().nameError) {
-                <div class="card-panel red accent-1">
-                  {{pokemonErrors().nameError}}
-                </div>
-              }
+            @if (pokemonErrors().nameError) {
+              <div class="card-panel red accent-1">
+                {{ pokemonErrors().nameError }}
+              </div>
+            }
           </div>
 
           <!-- Pokemon Picture -->
@@ -31,16 +31,18 @@
                 autocomplete="false"
                 formControlName="picture"
               />
-                @if (pokemonErrors().pictureError) {
-                  <div class="card-panel red accent-1" [innerHTML]="pokemonErrors().pictureError">
-                  </div>
-                }
+              @if (pokemonErrors().pictureError) {
+                <div
+                  class="card-panel red accent-1"
+                  [innerHTML]="pokemonErrors().pictureError"
+                ></div>
+              }
             </div>
           }
 
           <!-- Pokemon hp -->
           <div class="form-group">
-            <label for="hp">{{"details.hp" | translate}}</label>
+            <label for="hp">{{ "details.hp" | translate }}</label>
             <input
               type="number"
               class="form-control"
@@ -57,7 +59,7 @@
 
           <!-- Pokemon cp -->
           <div class="form-group">
-            <label for="cp">{{"details.cp" | translate}}</label>
+            <label for="cp">{{ "details.cp" | translate }}</label>
             <input
               type="number"
               class="form-control"
@@ -65,16 +67,16 @@
               autocomplete="false"
               formControlName="cp"
             />
-              @if (pokemonErrors().cpError) {
-                <div class="card-panel red accent-1">
-                  {{pokemonErrors().cpError}}
-                </div>
-              }
+            @if (pokemonErrors().cpError) {
+              <div class="card-panel red accent-1">
+                {{ pokemonErrors().cpError }}
+              </div>
+            }
           </div>
 
           <!-- Pokemon types -->
           <form class="form-group">
-            <p>{{"details.type" | translate}}</p>
+            <p>{{ "details.type" | translate }}</p>
             @for (type of types(); track type) {
               <p>
                 <label>
@@ -101,7 +103,7 @@
           <div class="divider"></div>
           <div class="section center">
             <button type="submit" class="waves-effect waves-light btn">
-              {{"details.validateBtn" | translate}}
+              {{ "details.validateBtn" | translate }}
             </button>
           </div>
         </div>

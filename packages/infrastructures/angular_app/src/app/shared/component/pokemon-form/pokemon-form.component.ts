@@ -9,30 +9,47 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
-import {Router} from '@angular/router';
-import {FormBuilder, FormGroup, ReactiveFormsModule,} from '@angular/forms';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
-import {LoaderComponent} from '../loader/loader.component';
-import {PokemonTypeColorPipe} from '../../pipe/type-color/pokemon-type-color.pipe';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {routesName} from '../../../app-routing-config';
-import {combineLatest, concatMap, debounceTime, distinctUntilChanged, from, map, Observable, startWith} from 'rxjs';
-import {Pokemon, PokemonRequest} from '@pokemon/domain';
-import {AddedPokemonController, EditPokemonController} from '@pokemon/web-adapters';
-import {DataSharedService} from '../../service/data-shared/data-shared.service';
-import {Builder} from 'builder-pattern';
-import {TypeFormEnum} from '../../model/enum/type-form.enum';
-import {TranslatePipe} from '../../pipe/translate/translate.pipe';
-import {typeFormEnumToken} from '../../tokens/type-form.token';
+import { LoaderComponent } from '../loader/loader.component';
+import { PokemonTypeColorPipe } from '../../pipe/type-color/pokemon-type-color.pipe';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { routesName } from '../../../app-routing-config';
+import {
+  combineLatest,
+  concatMap,
+  debounceTime,
+  distinctUntilChanged,
+  from,
+  map,
+  Observable,
+  startWith,
+} from 'rxjs';
+import { Pokemon, PokemonRequest } from '@pokemon/domain';
+import {
+  AddedPokemonController,
+  EditPokemonController,
+} from '@pokemon/web-adapters';
+import { DataSharedService } from '../../service/data-shared/data-shared.service';
+import { Builder } from 'builder-pattern';
+import { TypeFormEnum } from '../../model/enum/type-form.enum';
+import { TranslatePipe } from '../../pipe/translate/translate.pipe';
+import { typeFormEnumToken } from '../../tokens/type-form.token';
 
 @Component({
   selector: 'app-pokemon-form',
   standalone: true,
   templateUrl: './pokemon-form.component.html',
   styleUrl: './pokemon-form.component.scss',
-  imports: [LoaderComponent, PokemonTypeColorPipe, ReactiveFormsModule, TranslatePipe],
+  imports: [
+    LoaderComponent,
+    PokemonTypeColorPipe,
+    ReactiveFormsModule,
+    TranslatePipe,
+  ],
 })
-export class PokemonFormComponent implements OnInit , AfterViewInit{
+export class PokemonFormComponent implements OnInit, AfterViewInit {
   pokemon: InputSignal<Pokemon> = input.required();
 
   private readonly router: Router = inject(Router);
@@ -40,8 +57,12 @@ export class PokemonFormComponent implements OnInit , AfterViewInit{
   private readonly typeForm: TypeFormEnum = inject(typeFormEnumToken);
   private readonly destroyRef: DestroyRef = inject(DestroyRef);
   private readonly dataShared: DataSharedService = inject(DataSharedService);
-  private readonly addController: AddedPokemonController = inject(AddedPokemonController);
-  private readonly editController: EditPokemonController = inject(EditPokemonController);
+  private readonly addController: AddedPokemonController = inject(
+    AddedPokemonController,
+  );
+  private readonly editController: EditPokemonController = inject(
+    EditPokemonController,
+  );
 
   formGroup: FormGroup;
   isAddForm: boolean;
@@ -52,7 +73,7 @@ export class PokemonFormComponent implements OnInit , AfterViewInit{
     cpError: undefined,
     nameError: undefined,
     pictureError: undefined,
-  })
+  });
 
   ngOnInit() {
     this.isAddForm = this.typeForm === TypeFormEnum.CREATE;
@@ -69,21 +90,42 @@ export class PokemonFormComponent implements OnInit , AfterViewInit{
   }
 
   ngAfterViewInit(): void {
-    const controller: AddedPokemonController | EditPokemonController = this.isAddForm ? this.addController : this.editController;
-    this.formGroup.valueChanges.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      concatMap((formValue: any) => {
-        return combineLatest([
-          from(controller.validateName(formValue.name)).pipe(startWith(undefined)),
-          from(controller.validateHp(formValue.hp)).pipe(startWith(undefined)),
-          from(controller.validateCp(formValue.cp)).pipe(startWith(undefined)),
-          from(controller.validatePicture(formValue.picture)).pipe(startWith(undefined)),
-        ])
-      }),
-      map(([nameError, hpError, cpError, pictureError] : (string|undefined)[]) => ({nameError, hpError, cpError, pictureError} as PokemonErrors)),
-    ).pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((pokemonErrors: PokemonErrors) => this.pokemonErrors.set(pokemonErrors))
+    const controller: AddedPokemonController | EditPokemonController = this
+      .isAddForm
+      ? this.addController
+      : this.editController;
+    this.formGroup.valueChanges
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+        concatMap((formValue: any) => {
+          return combineLatest([
+            from(controller.validateName(formValue.name)).pipe(
+              startWith(undefined),
+            ),
+            from(controller.validateHp(formValue.hp)).pipe(
+              startWith(undefined),
+            ),
+            from(controller.validateCp(formValue.cp)).pipe(
+              startWith(undefined),
+            ),
+            from(controller.validatePicture(formValue.picture)).pipe(
+              startWith(undefined),
+            ),
+          ]);
+        }),
+        map(
+          ([nameError, hpError, cpError, pictureError]: (
+            | string
+            | undefined
+          )[]) =>
+            ({ nameError, hpError, cpError, pictureError }) as PokemonErrors,
+        ),
+      )
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((pokemonErrors: PokemonErrors) =>
+        this.pokemonErrors.set(pokemonErrors),
+      );
   }
 
   /**
@@ -134,7 +176,7 @@ export class PokemonFormComponent implements OnInit , AfterViewInit{
     $event.stopImmediatePropagation();
     let observable$: Observable<Pokemon>;
 
-    const pokemonRequest : PokemonRequest = Builder<PokemonRequest>()
+    const pokemonRequest: PokemonRequest = Builder<PokemonRequest>()
       .hp(this.formGroup.get('hp')?.value)
       .cp(this.formGroup.get('cp')?.value)
       .name(this.formGroup.get('name')?.value)
@@ -146,20 +188,27 @@ export class PokemonFormComponent implements OnInit , AfterViewInit{
     if (this.isAddForm) {
       observable$ = from(this.addController.create(pokemonRequest));
     } else {
-      observable$ = from(this.editController.update(this.pokemon().id, pokemonRequest));
+      observable$ = from(
+        this.editController.update(this.pokemon().id, pokemonRequest),
+      );
     }
 
-    observable$
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (pokemon: Pokemon)=> this.router.navigate([routesName.pokemon.children.detail.fullPath, pokemon.id]),
-        error: (errors: Map<string, string>)=> this.pokemonErrors.set(Builder<PokemonErrors>()
+    observable$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (pokemon: Pokemon) =>
+        this.router.navigate([
+          routesName.pokemon.children.detail.fullPath,
+          pokemon.id,
+        ]),
+      error: (errors: Map<string, string>) =>
+        this.pokemonErrors.set(
+          Builder<PokemonErrors>()
             .hpError(errors.get('hp'))
             .cpError(errors.get('cp'))
             .nameError(errors.get('name'))
             .pictureError(errors.get('picture'))
-            .build()),
-      });
+            .build(),
+        ),
+    });
   }
 }
 

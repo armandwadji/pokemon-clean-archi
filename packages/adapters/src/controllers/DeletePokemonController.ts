@@ -1,19 +1,20 @@
-import {DeletePokemonUseCase} from "@pokemon/domain";
-import {InputDeletePokemonValues} from "domain/src/ports/boundary/entrypoint/IDeletePokemonEntryPointBoundary";
-import {Builder} from "builder-pattern";
+import { DeletePokemonUseCase } from "@pokemon/domain";
+import { InputDeletePokemonValues } from "domain/src/ports/boundary/entrypoint/IDeletePokemonEntryPointBoundary";
+import { Builder } from "builder-pattern";
 
-export class DeletePokemonController{
+export class DeletePokemonController {
+  constructor(private readonly deletePokemonUseCase: DeletePokemonUseCase) {}
 
-    constructor(private readonly deletePokemonUseCase : DeletePokemonUseCase) {}
-
-    async delete(id: string): Promise<void> {
-        return new Promise(  (resolve, reject) =>{
-            try {
-                this.deletePokemonUseCase.execute(Builder<InputDeletePokemonValues>().pokemonId(id).build());
-                return resolve();
-            } catch (error) {
-                return reject(error)
-            }
-        } )
-    }
+  async delete(id: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      try {
+        this.deletePokemonUseCase.execute(
+          Builder<InputDeletePokemonValues>().pokemonId(id).build(),
+        );
+        return resolve();
+      } catch (error) {
+        return reject(error);
+      }
+    });
+  }
 }

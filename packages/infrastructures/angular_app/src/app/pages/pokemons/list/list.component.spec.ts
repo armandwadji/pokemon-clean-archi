@@ -1,9 +1,9 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {ListComponent} from './list.component';
-import {GetPokemonsController} from '@pokemon/web-adapters';
-import {Pokemon} from '@pokemon/domain';
-import {routesName} from '../../../app-routing-config';
-import {Router} from '@angular/router';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ListComponent } from './list.component';
+import { GetPokemonsController } from '@pokemon/web-adapters';
+import { Pokemon } from '@pokemon/domain';
+import { routesName } from '../../../app-routing-config';
+import { Router } from '@angular/router';
 
 describe('ListComponent', () => {
   let component: ListComponent;
@@ -13,10 +13,12 @@ describe('ListComponent', () => {
 
   beforeEach(async () => {
     mockController = {
-      getPokemons: jest.fn().mockResolvedValue([
-        {pokemon: { id: '1', name: 'Pikachu' } as Pokemon},
-      ]),
-      searchPokemonsByName: jest.fn()
+      getPokemons: jest
+        .fn()
+        .mockResolvedValue([
+          { pokemon: { id: '1', name: 'Pikachu' } as Pokemon },
+        ]),
+      searchPokemonsByName: jest.fn(),
     } as any;
 
     routerSpy = {
@@ -28,7 +30,7 @@ describe('ListComponent', () => {
       providers: [
         { provide: Router, useValue: routerSpy },
         { provide: GetPokemonsController, useValue: mockController },
-      ]
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ListComponent);

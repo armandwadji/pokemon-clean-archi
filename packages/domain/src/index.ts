@@ -1,20 +1,20 @@
 // USE CASES
-export * from './usecases/getPokemon/getPokemonUseCase'
-export * from './usecases/addPokemon/addPokemonUseCase'
-export * from './usecases/getPokemons/getPokemonsUseCase'
-export * from './usecases/deletePokemon/deletePokemonUseCase'
-export * from './usecases/updatePokemon/updatePokemonUseCase'
+export * from "./usecases/getPokemon/getPokemonUseCase";
+export * from "./usecases/addPokemon/addPokemonUseCase";
+export * from "./usecases/getPokemons/getPokemonsUseCase";
+export * from "./usecases/deletePokemon/deletePokemonUseCase";
+export * from "./usecases/updatePokemon/updatePokemonUseCase";
 
 // REPOSITORIES
-export * from './ports/boundary/dataprovider/IPokemonDataProviderBoundary'
+export * from "./ports/boundary/dataprovider/IPokemonDataProviderBoundary";
 
 // PRESENTERS
-export * from './ports/presenters/GetPokemonsPresenter'
-export * from './ports/presenters/GetPokemonPresenter'
-export * from './ports/presenters/AddPokemonPresenter'
+export * from "./ports/presenters/GetPokemonsPresenter";
+export * from "./ports/presenters/GetPokemonPresenter";
+export * from "./ports/presenters/AddPokemonPresenter";
 
 // ENTITIES
-export * from './entities/Pokemon'
+export * from "./entities/Pokemon";
 
 // REQUESTS
-export * from './ports/request/PokemonRequest'
+export * from "./ports/request/PokemonRequest";

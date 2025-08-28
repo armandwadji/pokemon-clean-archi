@@ -1,15 +1,15 @@
-import {useEffect} from "react";
+import { useEffect } from "react";
 
 interface PageProps {
-    title: string;
-    children: React.ReactNode;
+  title: string;
+  children: React.ReactNode;
 }
 
 function PageTitleWrapper({ title, children }: PageProps) {
-    useEffect(() => {
-        document.title = title;
-    }, [title]);
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
 
-    return <>{children}</>;
+  return <>{children}</>;
 }
 export default PageTitleWrapper;

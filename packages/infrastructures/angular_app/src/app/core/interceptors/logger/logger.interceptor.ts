@@ -1,10 +1,13 @@
-import {INGXLoggerMetadata, NgxLoggerLevel, NGXLoggerServerService} from 'ngx-logger';
-import {inject, Injectable, NgZone} from '@angular/core';
-import {HttpBackend, HttpHeaders, HttpRequest} from '@angular/common/http';
+import {
+  INGXLoggerMetadata,
+  NgxLoggerLevel,
+  NGXLoggerServerService,
+} from 'ngx-logger';
+import { inject, Injectable, NgZone } from '@angular/core';
+import { HttpBackend, HttpHeaders, HttpRequest } from '@angular/common/http';
 
 @Injectable()
-export class LoggerInterceptor extends NGXLoggerServerService{
-
+export class LoggerInterceptor extends NGXLoggerServerService {
   constructor() {
     super(inject(HttpBackend), inject(NgZone));
   }
@@ -27,10 +30,12 @@ export class LoggerInterceptor extends NGXLoggerServerService{
    * A conserver en plus d'un headerInterceptor
    * @param request
    */
-  public override alterHttpRequest(request: HttpRequest<any>): HttpRequest<any>{
+  public override alterHttpRequest(
+    request: HttpRequest<any>,
+  ): HttpRequest<any> {
     const headers = new HttpHeaders({
       Authorization: `Bearer XXXX-XXXX-XXXX-XXXX`,
-    })
+    });
 
     return request.clone({ headers });
   }

@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {JsonUtils} from '../../utils/json.utils';
+import { Injectable } from '@angular/core';
+import { JsonUtils } from '../../utils/json.utils';
 
 @Injectable({
   providedIn: 'root',

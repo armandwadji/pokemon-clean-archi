@@ -1,11 +1,16 @@
-import {ActivatedRouteSnapshot, MaybeAsync, ResolveFn} from '@angular/router';
-import {Pokemon} from '@pokemon/domain';
-import {GetPokemonController, PokemonPresenterVM} from '@pokemon/web-adapters';
-import {inject} from '@angular/core';
-import {from, map} from 'rxjs';
-import {NGXLogger} from 'ngx-logger';
+import { ActivatedRouteSnapshot, MaybeAsync, ResolveFn } from '@angular/router';
+import { Pokemon } from '@pokemon/domain';
+import {
+  GetPokemonController,
+  PokemonPresenterVM,
+} from '@pokemon/web-adapters';
+import { inject } from '@angular/core';
+import { from, map } from 'rxjs';
+import { NGXLogger } from 'ngx-logger';
 
-export const pokemonResolver: ResolveFn<MaybeAsync<Pokemon>> = (route: ActivatedRouteSnapshot): MaybeAsync<Pokemon> => {
+export const pokemonResolver: ResolveFn<MaybeAsync<Pokemon>> = (
+  route: ActivatedRouteSnapshot,
+): MaybeAsync<Pokemon> => {
   const controller: GetPokemonController = inject(GetPokemonController);
   const logger: NGXLogger = inject(NGXLogger);
   const id = route.paramMap.get('id') as string;
@@ -13,6 +18,7 @@ export const pokemonResolver: ResolveFn<MaybeAsync<Pokemon>> = (route: Activated
     logger.error('Pokemon ID is required for the resolver');
     throw new Error('Pokemon ID is required for the resolver');
   }
-  return from(controller.getPokemon(id))
-    .pipe(map((vm: PokemonPresenterVM) => vm.pokemon as Pokemon))
+  return from(controller.getPokemon(id)).pipe(
+    map((vm: PokemonPresenterVM) => vm.pokemon as Pokemon),
+  );
 };

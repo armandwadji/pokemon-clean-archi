@@ -1,22 +1,25 @@
-import {formatType} from "./formatType";
+import { formatType } from "./formatType";
 
 describe("test formatType", () => {
-    it.each([
-        { type: 'Feu', expected: 'red lighten-1' },
-        { type: 'Eau', expected: 'blue lighten-1' },
-        { type: 'Plante', expected: 'green lighten-1' },
-        { type: 'Insecte', expected: 'brown lighten-1' },
-        { type: 'Normal', expected: 'grey lighten-3' },
-        { type: 'Vol', expected: 'blue lighten-3' },
-        { type: 'Poison', expected: 'deep-purple accent-1' },
-        { type: 'Fée', expected: 'pink lighten-4' },
-        { type: 'Electrik', expected: 'lime accent-1' },
-        { type: 'Psy', expected: 'deep-purple darken-2' },
-        { type: 'Combat', expected: 'deep-orange' },
-        { type: 'Inconnu', expected: 'grey' },
-        { type: null, expected: 'grey' },
-        { type: undefined, expected: 'grey' }
-    ])('should return for type $type correct color $expected', ({ type, expected }) => {
-        expect(formatType(type as string)).toBe(`chip ${expected}`);
-    });
-})
+  it.each([
+    { type: "Feu", expected: "red lighten-1" },
+    { type: "Eau", expected: "blue lighten-1" },
+    { type: "Plante", expected: "green lighten-1" },
+    { type: "Insecte", expected: "brown lighten-1" },
+    { type: "Normal", expected: "grey lighten-3" },
+    { type: "Vol", expected: "blue lighten-3" },
+    { type: "Poison", expected: "deep-purple accent-1" },
+    { type: "Fée", expected: "pink lighten-4" },
+    { type: "Electrik", expected: "lime accent-1" },
+    { type: "Psy", expected: "deep-purple darken-2" },
+    { type: "Combat", expected: "deep-orange" },
+    { type: "Inconnu", expected: "grey" },
+    { type: null, expected: "grey" },
+    { type: undefined, expected: "grey" },
+  ])(
+    "should return for type $type correct color $expected",
+    ({ type, expected }) => {
+      expect(formatType(type as string)).toBe(`chip ${expected}`);
+    },
+  );
+});

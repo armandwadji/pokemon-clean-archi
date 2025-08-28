@@ -1,11 +1,20 @@
-import {Component, inject, Signal, signal, WritableSignal,} from '@angular/core';
-import {Router} from '@angular/router';
-import {debounceTime, distinctUntilChanged, from, map, switchMap} from 'rxjs';
-import {toObservable, toSignal} from '@angular/core/rxjs-interop';
-import {routesName} from '../../../app-routing-config';
-import {FormsModule} from '@angular/forms';
-import {Pokemon} from '@pokemon/domain';
-import {GetPokemonsController, PokemonsPresenterVM} from '@pokemon/web-adapters';
+import {
+  Component,
+  inject,
+  Signal,
+  signal,
+  WritableSignal,
+} from '@angular/core';
+import { Router } from '@angular/router';
+import { debounceTime, distinctUntilChanged, from, map, switchMap } from 'rxjs';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { routesName } from '../../../app-routing-config';
+import { FormsModule } from '@angular/forms';
+import { Pokemon } from '@pokemon/domain';
+import {
+  GetPokemonsController,
+  PokemonsPresenterVM,
+} from '@pokemon/web-adapters';
 
 @Component({
   selector: 'app-search-pokemon',
@@ -15,7 +24,9 @@ import {GetPokemonsController, PokemonsPresenterVM} from '@pokemon/web-adapters'
 })
 export class SearchPokemonComponent {
   private readonly router: Router = inject(Router);
-  private readonly controller: GetPokemonsController = inject(GetPokemonsController);
+  private readonly controller: GetPokemonsController = inject(
+    GetPokemonsController,
+  );
 
   searchTerms: WritableSignal<string> = signal('');
   pokemons: Signal<Pokemon[] | undefined> = toSignal(
@@ -24,8 +35,8 @@ export class SearchPokemonComponent {
       distinctUntilChanged(),
       switchMap((search) => from(this.controller.searchPokemonsByName(search))),
       map((response: PokemonsPresenterVM) => {
-        return response.pokemonsSearch
-      })
+        return response.pokemonsSearch;
+      }),
     ),
   );
 

@@ -1,9 +1,9 @@
-import {Pipe, PipeTransform} from '@angular/core';
-import {ArgTranslate, DotNotation} from '../../model/translate.model';
-import {TranslateService} from '../../service/translate/translate.service';
+import { Pipe, PipeTransform } from '@angular/core';
+import { ArgTranslate, DotNotation } from '../../model/translate.model';
+import { TranslateService } from '../../service/translate/translate.service';
 
 @Pipe({
-  name: 'translate'
+  name: 'translate',
 })
 export class TranslatePipe implements PipeTransform {
   private translateService: TranslateService;
@@ -12,8 +12,10 @@ export class TranslatePipe implements PipeTransform {
     this.translateService = translateService;
   }
 
-  transform(value: DotNotation<typeof import("../../../../assets/i18n/fr.json")>, args?: ArgTranslate[],): string {
+  transform(
+    value: DotNotation<typeof import('../../../../assets/i18n/fr.json')>,
+    args?: ArgTranslate[],
+  ): string {
     return this.translateService.translate(value, args).toString();
   }
-
 }
