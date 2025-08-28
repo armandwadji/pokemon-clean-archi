@@ -1,6 +1,6 @@
 import React, {FunctionComponent, useContext, useEffect, useState} from "react";
 import {NavigateFunction, useNavigate} from "react-router";
-import {formatType} from "../utils/formatType";
+import {formatType} from "../utils/formatType/formatType";
 import {PokemonRequest} from "@pokemon/domain";
 import {PokemonsPresenterVM} from "@pokemon/web-adapters";
 import {DataProviderContext, dataProviderContextType} from "../context/DataProviderContext";

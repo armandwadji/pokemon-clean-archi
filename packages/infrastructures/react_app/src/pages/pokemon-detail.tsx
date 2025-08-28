@@ -1,8 +1,8 @@
 import React, {FunctionComponent} from "react";
 import {Link, useParams} from "react-router-dom";
 import Loader from "../components/loader";
-import {formatType} from "../utils/formatType";
-import {formatDate} from "../utils/formatDate";
+import {formatType} from "../utils/formatType/formatType";
+import {formatDate} from "../utils/formatDate/formatDate";
 import usePokemon from "../hooks/pokemonHook";
 import {Pokemon} from "@pokemon/domain";
 import {routesName} from "../utils/routing.config";

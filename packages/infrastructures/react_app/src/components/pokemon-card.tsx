@@ -1,6 +1,6 @@
 import {FunctionComponent, useState} from "react";
-import {formatDate} from "../utils/formatDate";
-import {formatType} from "../utils/formatType";
+import {formatDate} from "../utils/formatDate/formatDate";
+import {formatType} from "../utils/formatType/formatType";
 import {NavigateFunction, useNavigate} from "react-router";
 import {Pokemon} from "@pokemon/domain/src";
 import {routesName} from "../utils/routing.config";
