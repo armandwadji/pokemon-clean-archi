@@ -6,6 +6,8 @@
   "private": true,
   "description": "Root of pokemon App",
   "scripts": {
+    "angular": "npm start --prefix packages/infrastructures/angular_app",
+    "react": "npm start --prefix packages/infrastructures/react_app",
     "test": "jest",
     "test:coverage": "npm run test --coverage",
     "eslint": "npx eslint . --ext js,jsx,ts,tsx --fix",
@@ -17,8 +19,6 @@
     "commitlint": "commitlint --edit",
     "compodoc-coverage-test": "npx compodoc -p tsconfig.doc.json --coverageMinimumPerFile 25",
     "precommit": "npm run pretty-quick && npm run prettier && npm run prettier:check && npm run test",
-    "angular": "npm start --prefix packages/infrastructures/angular_app",
-    "react": "npm start --prefix packages/infrastructures/react_app",
     "prepare": "husky"
   },
   "workspaces": [

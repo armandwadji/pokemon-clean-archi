@@ -9,7 +9,7 @@ import { routesName } from "../utils/routing.config";
 
 const PokemonsDetail: FunctionComponent = () => {
   const { id } = useParams();
-  const pokemon: Pokemon | undefined = id ? usePokemon(id) : undefined;
+  const pokemon: Pokemon | undefined = usePokemon(id ?? "");
 
   return (
     <div>
