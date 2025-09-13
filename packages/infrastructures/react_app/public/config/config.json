@@ -1,0 +1,9 @@
+{
+  "keepAliveActive": true,
+  "keepAlivePing": 100,
+  "keepAliveIdle": 5,
+  "keepAliveTimeout": 3,
+  "apiUrl": "http://localhost:8000",
+  "pokemonDataProviderVersion": "V1",
+  "authenticationDataProviderVersion": "V1"
+}

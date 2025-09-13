@@ -1,0 +1,46 @@
+{
+  "details": {
+    "name": "Name",
+    "hp": "Hit points",
+    "cp": "Damage",
+    "type": "Types",
+    "date": "Creation date",
+    "previousBtn": "previous",
+    "editBtn": "edit",
+    "deleteBtn": "delete",
+    "validateBtn": "validate"
+  },
+  "edit": {
+    "title": "Edit $1"
+  },
+  "add": {
+    "title": "Add a new Pokémon"
+  },
+  "form": {
+    "name": "Name",
+    "picture": "Image",
+    "hp": "Hit points",
+    "cp": "Damage",
+    "type": "Types",
+    "submitBtn": "validate"
+  },
+  "search": {
+    "placeholder": "Search a Pokémon",
+    "emptyResult": "No result match"
+  },
+  "login": {
+    "title": "Login page",
+    "subtitle": "You are disconnected",
+    "username": "Username",
+    "password": "Password",
+    "loginBtn": "Login",
+    "logoutBtn": "Logout",
+    "technicalError": "Error during authentication.",
+    "functionalError": "Username and/or password incorrect..."
+  },
+  "error": {
+    "title": "Error",
+    "pageNotFound": "Hey, this page does not exist",
+    "btnLabel": "Return to home"
+  }
+}

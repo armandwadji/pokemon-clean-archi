@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import Loader from "../components/loader";
 import { formatType } from "../utils/formatType/formatType";
@@ -6,10 +6,17 @@ import { formatDate } from "../utils/formatDate/formatDate";
 import usePokemon from "../hooks/pokemonHook";
 import { Pokemon } from "@pokemon/domain";
 import { routesName } from "../utils/routing.config";
+import {
+  DataProviderContext,
+  dataProviderContextType,
+} from "../context/DataProviderContext";
 
 const PokemonsDetail: FunctionComponent = () => {
   const { id } = useParams();
   const pokemon: Pokemon | undefined = usePokemon(id ?? "");
+  const { translateService } = useContext(
+    DataProviderContext,
+  ) as dataProviderContextType;
 
   return (
     <div>
@@ -36,25 +43,33 @@ const PokemonsDetail: FunctionComponent = () => {
                   <table className="bordered striped">
                     <tbody>
                       <tr>
-                        <td>Nom</td>
+                        <td>
+                          {translateService.translate("details.name") as string}
+                        </td>
                         <td>
                           <strong>{pokemon.name}</strong>
                         </td>
                       </tr>
                       <tr>
-                        <td>Points de vie</td>
+                        <td>
+                          {translateService.translate("details.hp") as string}
+                        </td>
                         <td>
                           <strong>{pokemon.hp}</strong>
                         </td>
                       </tr>
                       <tr>
-                        <td>Dégâts</td>
+                        <td>
+                          {translateService.translate("details.cp") as string}
+                        </td>
                         <td>
                           <strong>{pokemon.cp}</strong>
                         </td>
                       </tr>
                       <tr>
-                        <td>Types</td>
+                        <td>
+                          {translateService.translate("details.type") as string}
+                        </td>
                         <td>
                           {pokemon.types.map((type: string) => (
                             <span key={type} className={formatType(type)}>
@@ -64,14 +79,21 @@ const PokemonsDetail: FunctionComponent = () => {
                         </td>
                       </tr>
                       <tr>
-                        <td>Date de création</td>
+                        <td>
+                          {translateService.translate("details.date") as string}
+                        </td>
                         <td>{formatDate(pokemon.created)}</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
                 <div className="card-action">
-                  <Link to={`/${routesName.pokemon.path}`}>Retour</Link>
+                  <Link
+                    to={`/${routesName.pokemon.path}`}
+                    className="btn btn-floating waves-effect waves-light"
+                  >
+                    <i className="material-icons">arrow_back</i>
+                  </Link>
                 </div>
               </div>
             </div>

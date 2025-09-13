@@ -1,0 +1,46 @@
+{
+  "details": {
+    "name": "Nombre",
+    "hp": "Puntos de vida",
+    "cp": "Daño",
+    "type": "Tipos",
+    "date": "Fecha de creación",
+    "previousBtn": "anterior",
+    "editBtn": "editar",
+    "deleteBtn": "eliminar",
+    "validateBtn": "validar"
+  },
+  "edit": {
+    "title": "Editar $1"
+  },
+  "add": {
+    "title": "Añadir un nuevo Pokémon"
+  },
+  "form": {
+    "name": "Nombre",
+    "picture": "Imagen",
+    "hp": "Puntos de vida",
+    "cp": "Daño",
+    "type": "Tipos",
+    "submitBtn": "validar"
+  },
+  "search": {
+    "placeholder": "Buscar un Pokémon",
+    "emptyResult": "No se encontraron resultados"
+  },
+  "login": {
+    "title": "Página de inicio de sesión",
+    "subtitle": "Estás desconectado",
+    "username": "Nombre de usuario",
+    "password": "Contraseña",
+    "loginBtn": "Iniciar sesión",
+    "logoutBtn": "Cerrar sesión",
+    "technicalError": "Error durante la autenticación.",
+    "functionalError": "Nombre de usuario y/o contraseña incorrectos..."
+  },
+  "error": {
+    "title": "Error",
+    "pageNotFound": "Oye, esta página no existe",
+    "btnLabel": "Volver a inicio"
+  }
+}

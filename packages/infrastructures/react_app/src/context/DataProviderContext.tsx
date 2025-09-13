@@ -1,4 +1,10 @@
-import React, { Context, createContext, useMemo } from "react";
+import React, {
+  Context,
+  createContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   AddedPokemonController,
   DeletePokemonController,
@@ -14,6 +20,8 @@ import {
   GetPokemonUseCase,
   UpdatePokemonUseCase,
 } from "@pokemon/domain";
+import { Config } from "../shared/model/config.model";
+import { TranslateService } from "../shared/service/translate/translate.service";
 
 export interface dataProviderContextType {
   getPokemonsController: GetPokemonsController;
@@ -21,6 +29,8 @@ export interface dataProviderContextType {
   updatePokemonController: EditPokemonController;
   addPokemonController: AddedPokemonController;
   deletePokemonController: DeletePokemonController;
+  config: Config;
+  translateService: TranslateService;
 }
 
 interface dataProviderContextProps {
@@ -31,13 +41,39 @@ const DataProviderContext: Context<dataProviderContextType | null> =
   createContext<dataProviderContextType | null>(null);
 
 const DataProvider = ({ children }: dataProviderContextProps) => {
+  const [config, setConfig] = useState<Config>(new Config({}));
+  const [translateService, setTranslateService] = useState<TranslateService>(
+    new TranslateService({} as typeof import("../../public/i18n/fr.json")),
+  );
+
+  useEffect(() => {
+    const userLang: string = navigator.language.split("-")[0];
+
+    Promise.all([
+      fetch(`${process.env.PUBLIC_URL}/config/config.json`).then(
+        (response: Response) => response.json(),
+      ),
+      fetch(`${process.env.PUBLIC_URL}/i18n/${userLang}.json`).then(
+        (response: Response) => response.json(),
+      ),
+    ]).then((data: any[]) => {
+      setConfig(new Config(data.at(0)));
+      setTranslateService(
+        new TranslateService(
+          data.at(1) as typeof import("../../public/i18n/fr.json"),
+        ),
+      );
+    });
+  }, []);
+
   /**
    * Data Provider Factory (can be V1 or V2, depending on the API version to use)
    * Here we use V1 as example
    */
   const pokemonDataProvider: PokemonDataProviderFactory = useMemo(
-    () => new PokemonDataProviderFactory("V1"),
-    [],
+    () =>
+      new PokemonDataProviderFactory(config.pokemonDataProviderVersion ?? "V1"),
+    [config.pokemonDataProviderVersion],
   );
 
   /**
@@ -108,6 +144,8 @@ const DataProvider = ({ children }: dataProviderContextProps) => {
         updatePokemonController,
         addPokemonController,
         deletePokemonController,
+        config,
+        translateService,
       }}
     >
       {children}

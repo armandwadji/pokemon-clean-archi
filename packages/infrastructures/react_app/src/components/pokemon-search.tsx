@@ -12,7 +12,7 @@ import { routesName } from "../utils/routing.config";
 const PokemonSearch: FunctionComponent = () => {
   const [term, setTerm] = useState<string>("");
   const [pokemons, setPokemons] = useState<Pokemon[] | undefined>([]);
-  const { getPokemonsController } = useContext(
+  const { getPokemonsController, translateService } = useContext(
     DataProviderContext,
   ) as dataProviderContextType;
 
@@ -44,14 +44,18 @@ const PokemonSearch: FunctionComponent = () => {
             <div className="input-field">
               <input
                 type="text"
-                placeholder="Rechercher un pokémon"
+                placeholder={
+                  translateService.translate("search.placeholder") as string
+                }
                 value={term}
                 onChange={(e) => handleInputChange(e)}
               />
             </div>
             <div className="collection">
               {!pokemons ? (
-                <p className="collection-item">No result match</p>
+                <p className="collection-item">
+                  {translateService.translate("search.emptyResult") as string}
+                </p>
               ) : (
                 pokemons.map((pokemon) => (
                   <Link

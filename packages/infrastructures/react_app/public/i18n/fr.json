@@ -1,0 +1,46 @@
+{
+  "details": {
+    "name": "Nom",
+    "hp": "Points de vie",
+    "cp": "Dégâts",
+    "type": "Types",
+    "date": "Date de création",
+    "previousBtn": "retour",
+    "editBtn": "editer",
+    "deleteBtn": "supprimer",
+    "validateBtn": "valider"
+  },
+  "edit": {
+    "title": "Édition de $1"
+  },
+  "add": {
+    "title": "Ajouter un nouveau Pokémon"
+  },
+  "form": {
+    "name": "Nom",
+    "picture": "Image",
+    "hp": "Points de vie",
+    "cp": "Dégâts",
+    "type": "Types",
+    "submitBtn": "valider"
+  },
+  "search": {
+    "placeholder": "Rechercher un Pokémon",
+    "emptyResult": "Aucun résultat trouvé"
+  },
+  "login": {
+    "title": "Page de connexion",
+    "subtitle": "Vous êtes déconnecté",
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "loginBtn": "Se connecter",
+    "logoutBtn": "Se déconnecter",
+    "technicalError": "Erreur lors de l'authentification.",
+    "functionalError": "Identifiant et ou mot de passe incorrect..."
+  },
+  "error": {
+    "title": "Erreur",
+    "pageNotFound": "Hey, cette page n'existe pas",
+    "btnLabel": "Retourner à l'accueil"
+  }
+}

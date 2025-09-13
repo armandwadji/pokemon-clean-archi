@@ -39,6 +39,7 @@ const PokemonForm: FunctionComponent<Props> = ({ id, pokemon }) => {
     updatePokemonController,
     addPokemonController,
     deletePokemonController,
+    translateService,
   } = useContext(DataProviderContext) as dataProviderContextType;
 
   //On définit tous les types de pokémons
@@ -263,7 +264,9 @@ const PokemonForm: FunctionComponent<Props> = ({ id, pokemon }) => {
                 {/* Pokemon picture */}
                 {isAddForm && (
                   <div className="form-group">
-                    <label htmlFor="picture">Image</label>
+                    <label htmlFor="picture">
+                      {translateService.translate("form.picture") as string}
+                    </label>
                     <input
                       id="picture"
                       type="text"
@@ -284,7 +287,9 @@ const PokemonForm: FunctionComponent<Props> = ({ id, pokemon }) => {
 
                 {/* Pokemon name */}
                 <div className="form-group">
-                  <label htmlFor="name">Nom</label>
+                  <label htmlFor="name">
+                    {translateService.translate("form.name") as string}
+                  </label>
                   <input
                     id="name"
                     type="text"
@@ -303,7 +308,9 @@ const PokemonForm: FunctionComponent<Props> = ({ id, pokemon }) => {
 
                 {/* Pokemon hp */}
                 <div className="form-group">
-                  <label htmlFor="hp">Point de vie</label>
+                  <label htmlFor="hp">
+                    {translateService.translate("form.hp") as string}
+                  </label>
                   <input
                     id="hp"
                     type="number"
@@ -322,7 +329,9 @@ const PokemonForm: FunctionComponent<Props> = ({ id, pokemon }) => {
 
                 {/* Pokemon cp */}
                 <div className="form-group">
-                  <label htmlFor="cp">Dégâts</label>
+                  <label htmlFor="cp">
+                    {translateService.translate("form.cp") as string}
+                  </label>
                   <input
                     id="cp"
                     type="number"
@@ -341,7 +350,9 @@ const PokemonForm: FunctionComponent<Props> = ({ id, pokemon }) => {
 
                 {/* Pokemon types */}
                 <div className="form-group">
-                  <label>Types</label>
+                  <label>
+                    {translateService.translate("form.type") as string}
+                  </label>
                   {types.map((type) => (
                     <div key={type} style={{ marginBottom: "10px" }}>
                       <label>
@@ -367,7 +378,7 @@ const PokemonForm: FunctionComponent<Props> = ({ id, pokemon }) => {
               <div className="card-action center">
                 <button type="submit" className="btn">
                   {" "}
-                  Valider
+                  {translateService.translate("form.submitBtn") as string}
                 </button>
               </div>
             </div>
