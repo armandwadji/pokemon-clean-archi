@@ -56,11 +56,11 @@ const DataProvider = ({ children }: dataProviderContextProps) => {
       fetch(`${process.env.PUBLIC_URL}/i18n/${userLang}.json`).then(
         (response: Response) => response.json(),
       ),
-    ]).then(([configResponse, translateresponse]: any[]) => {
+    ]).then(([configResponse, translateResponse]: any[]) => {
       setConfig(new Config(configResponse));
       setTranslateService(
         new TranslateService(
-          translateresponse as typeof import("../../public/i18n/fr.json"),
+          translateResponse as typeof import("../../public/i18n/fr.json"),
         ),
       );
     });
