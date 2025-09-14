@@ -1,0 +1,16 @@
+name: Build & Deploy cefim voyage app to dev and prod env
+run-name: ${{ github.actor }} Build pokemon app project.
+
+on:
+  push:
+    branches: ["dev", "main"]
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  npm:
+    name: NPM
+    secrets: inherit
+    uses: ./.github/workflows/npm.yml
