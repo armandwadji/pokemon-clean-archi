@@ -1,9 +1,18 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, {
+  FunctionComponent,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import PokemonForm from "../components/pokemon-form";
 import { useParams } from "react-router";
 import Loader from "../components/loader";
 import usePokemon from "../hooks/pokemonHook";
 import { Pokemon, PokemonRequest } from "@pokemon/domain";
+import {
+  DataProviderContext,
+  dataProviderContextType,
+} from "../context/DataProviderContext";
 
 const PokemonEdit: FunctionComponent = () => {
   const { id } = useParams();
@@ -11,6 +20,9 @@ const PokemonEdit: FunctionComponent = () => {
   const [pokemonRequest, setPokemonRequest] = useState<
     PokemonRequest | undefined
   >(undefined);
+  const { translateService } = useContext(
+    DataProviderContext,
+  ) as dataProviderContextType;
 
   useEffect(() => {
     if (pokemon) {
@@ -25,7 +37,13 @@ const PokemonEdit: FunctionComponent = () => {
     <div>
       {pokemonRequest ? (
         <div className="row">
-          <h2 className="header center">Éditer {pokemonRequest.name}</h2>
+          <h2 className="header center">
+            {
+              translateService.translate("edit.title", [
+                { value: pokemonRequest.name },
+              ]) as string
+            }
+          </h2>
           <PokemonForm pokemon={pokemonRequest} id={String(id)}></PokemonForm>
         </div>
       ) : (
