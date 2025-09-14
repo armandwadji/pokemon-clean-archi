@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} Build pokemon app project.
 
 on:
   push:
-    branches: ["dev", "main", "V***"]
+    branches: ["dev", "main", "V*"]
 
 permissions:
   actions: write
