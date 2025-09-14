@@ -1,10 +1,4 @@
-import React, {
-  Context,
-  createContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import React, { Context, createContext, useContext, useMemo } from "react";
 import {
   AddedPokemonController,
   DeletePokemonController,
@@ -20,51 +14,25 @@ import {
   GetPokemonUseCase,
   UpdatePokemonUseCase,
 } from "@pokemon/domain";
-import { Config } from "../shared/model/config.model";
-import { TranslateService } from "../shared/service/translate/translate.service";
+import { AppInitContext, appInitContextType } from "./AppInitContext";
 
-export interface dataProviderContextType {
+export interface appDataProviderContextType {
   getPokemonsController: GetPokemonsController;
   getPokemonController: GetPokemonController;
   updatePokemonController: EditPokemonController;
   addPokemonController: AddedPokemonController;
   deletePokemonController: DeletePokemonController;
-  config: Config;
-  translateService: TranslateService;
 }
 
-interface dataProviderContextProps {
+interface appDataProviderContextProps {
   children: React.ReactNode;
 }
 
-const DataProviderContext: Context<dataProviderContextType | null> =
-  createContext<dataProviderContextType | null>(null);
+const AppDataProviderContext: Context<appDataProviderContextType | null> =
+  createContext<appDataProviderContextType | null>(null);
 
-const DataProvider = ({ children }: dataProviderContextProps) => {
-  const [config, setConfig] = useState<Config>(new Config({}));
-  const [translateService, setTranslateService] = useState<TranslateService>(
-    new TranslateService({} as typeof import("../../public/i18n/fr.json")),
-  );
-
-  useEffect(() => {
-    const userLang: string = navigator.language.split("-")[0];
-
-    Promise.all([
-      fetch(`${process.env.PUBLIC_URL}/config/config.json`).then(
-        (response: Response) => response.json(),
-      ),
-      fetch(`${process.env.PUBLIC_URL}/i18n/${userLang}.json`).then(
-        (response: Response) => response.json(),
-      ),
-    ]).then(([configResponse, translateResponse]: any[]) => {
-      setConfig(new Config(configResponse));
-      setTranslateService(
-        new TranslateService(
-          translateResponse as typeof import("../../public/i18n/fr.json"),
-        ),
-      );
-    });
-  }, []);
+const AppDataProvider = ({ children }: appDataProviderContextProps) => {
+  const { config } = useContext(AppInitContext) as appInitContextType;
 
   /**
    * Data Provider Factory (can be V1 or V2, depending on the API version to use)
@@ -137,20 +105,18 @@ const DataProvider = ({ children }: dataProviderContextProps) => {
   );
 
   return (
-    <DataProviderContext.Provider
+    <AppDataProviderContext.Provider
       value={{
         getPokemonsController,
         getPokemonController,
         updatePokemonController,
         addPokemonController,
         deletePokemonController,
-        config,
-        translateService,
       }}
     >
       {children}
-    </DataProviderContext.Provider>
+    </AppDataProviderContext.Provider>
   );
 };
 
-export { DataProviderContext, DataProvider };
+export { AppDataProviderContext, AppDataProvider };

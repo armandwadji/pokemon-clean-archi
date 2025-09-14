@@ -1,16 +1,16 @@
 import { useContext, useEffect, useState } from "react";
 import {
-  DataProviderContext,
-  dataProviderContextType,
-} from "../context/DataProviderContext";
+  AppDataProviderContext,
+  appDataProviderContextType,
+} from "../context/AppDataProviderContext";
 import { PokemonPresenterVM } from "@pokemon/web-adapters";
 import { Pokemon } from "@pokemon/domain";
 
 const usePokemon = (id: string) => {
   const [pokemon, setPokemon] = useState<Pokemon | undefined>(undefined);
   const { getPokemonController } = useContext(
-    DataProviderContext,
-  ) as dataProviderContextType;
+    AppDataProviderContext,
+  ) as appDataProviderContextType;
 
   useEffect(() => {
     getPokemonController

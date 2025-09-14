@@ -6,17 +6,12 @@ import { formatDate } from "../utils/formatDate/formatDate";
 import usePokemon from "../hooks/pokemonHook";
 import { Pokemon } from "@pokemon/domain";
 import { routesName } from "../utils/routing.config";
-import {
-  DataProviderContext,
-  dataProviderContextType,
-} from "../context/DataProviderContext";
+import { AppInitContext, appInitContextType } from "../context/AppInitContext";
 
 const PokemonsDetail: FunctionComponent = () => {
   const { id } = useParams();
   const pokemon: Pokemon | undefined = usePokemon(id ?? "");
-  const { translateService } = useContext(
-    DataProviderContext,
-  ) as dataProviderContextType;
+  const { translateService } = useContext(AppInitContext) as appInitContextType;
 
   return (
     <div>

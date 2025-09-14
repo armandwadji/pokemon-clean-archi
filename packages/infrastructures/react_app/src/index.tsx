@@ -3,16 +3,19 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router";
-import { DataProvider } from "./context/DataProviderContext";
+import { AppDataProvider } from "./context/AppDataProviderContext";
+import { AppInit } from "./context/AppInitContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 );
 root.render(
   <BrowserRouter>
-    <DataProvider>
-      <App />
-    </DataProvider>
+    <AppInit>
+      <AppDataProvider>
+        <App />
+      </AppDataProvider>
+    </AppInit>
   </BrowserRouter>,
 );
 

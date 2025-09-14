@@ -9,10 +9,7 @@ import { useParams } from "react-router";
 import Loader from "../components/loader";
 import usePokemon from "../hooks/pokemonHook";
 import { Pokemon, PokemonRequest } from "@pokemon/domain";
-import {
-  DataProviderContext,
-  dataProviderContextType,
-} from "../context/DataProviderContext";
+import { AppInitContext, appInitContextType } from "../context/AppInitContext";
 
 const PokemonEdit: FunctionComponent = () => {
   const { id } = useParams();
@@ -20,9 +17,7 @@ const PokemonEdit: FunctionComponent = () => {
   const [pokemonRequest, setPokemonRequest] = useState<
     PokemonRequest | undefined
   >(undefined);
-  const { translateService } = useContext(
-    DataProviderContext,
-  ) as dataProviderContextType;
+  const { translateService } = useContext(AppInitContext) as appInitContextType;
 
   useEffect(() => {
     if (pokemon) {

@@ -9,10 +9,11 @@ import { formatType } from "../utils/formatType/formatType";
 import { PokemonRequest } from "@pokemon/domain";
 import { PokemonsPresenterVM } from "@pokemon/web-adapters";
 import {
-  DataProviderContext,
-  dataProviderContextType,
-} from "../context/DataProviderContext";
+  AppDataProviderContext,
+  appDataProviderContextType,
+} from "../context/AppDataProviderContext";
 import { routesName } from "../utils/routing.config";
+import { AppInitContext, appInitContextType } from "../context/AppInitContext";
 
 interface Props {
   id: string | undefined;
@@ -39,8 +40,8 @@ const PokemonForm: FunctionComponent<Props> = ({ id, pokemon }) => {
     updatePokemonController,
     addPokemonController,
     deletePokemonController,
-    translateService,
-  } = useContext(DataProviderContext) as dataProviderContextType;
+  } = useContext(AppDataProviderContext) as appDataProviderContextType;
+  const { translateService } = useContext(AppInitContext) as appInitContextType;
 
   //On définit tous les types de pokémons
   const [types, setTypes] = useState<string[]>([]);
