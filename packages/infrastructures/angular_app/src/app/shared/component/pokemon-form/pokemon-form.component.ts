@@ -1,11 +1,13 @@
 import {
   AfterViewInit,
   Component,
+  computed,
   DestroyRef,
   inject,
   input,
   InputSignal,
   OnInit,
+  Signal,
   signal,
   WritableSignal,
 } from '@angular/core';
@@ -74,6 +76,10 @@ export class PokemonFormComponent implements OnInit, AfterViewInit {
     nameError: undefined,
     pictureError: undefined,
   });
+
+  formIsValid: Signal<boolean> = computed(() =>
+    Object.values(this.pokemonErrors()).every((error) => !error),
+  );
 
   ngOnInit() {
     this.isAddForm = this.typeForm === TypeFormEnum.CREATE;
@@ -171,9 +177,7 @@ export class PokemonFormComponent implements OnInit, AfterViewInit {
   /**
    * Cette méthode ajoute ou édite un pokémon.
    */
-  onSubmit($event: Event): void {
-    $event.preventDefault();
-    $event.stopImmediatePropagation();
+  onSubmit(): void {
     let observable$: Observable<Pokemon>;
 
     const pokemonRequest: PokemonRequest = Builder<PokemonRequest>()

@@ -1,5 +1,8 @@
 @if (pokemon()) {
-  <form [formGroup]="formGroup" (ngSubmit)="onSubmit($event)">
+  <form
+    [formGroup]="formGroup"
+    (ngSubmit)="onSubmit(); $event.preventDefault()"
+  >
     <div class="row">
       <div class="col s8 offset-s2">
         <div class="card-panel">
@@ -102,7 +105,11 @@
           <!-- Submit button -->
           <div class="divider"></div>
           <div class="section center">
-            <button type="submit" class="waves-effect waves-light btn">
+            <button
+              type="submit"
+              [disabled]="!formIsValid()"
+              class="waves-effect waves-light btn"
+            >
               {{ "details.validateBtn" | translate }}
             </button>
           </div>
