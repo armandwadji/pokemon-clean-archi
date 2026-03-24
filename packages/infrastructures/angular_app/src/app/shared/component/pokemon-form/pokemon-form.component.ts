@@ -1,33 +1,20 @@
 import {
-  AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   computed,
-  DestroyRef,
   inject,
   input,
   InputSignal,
-  OnInit,
+  linkedSignal,
   Signal,
   signal,
   WritableSignal,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { LoaderComponent } from '../loader/loader.component';
 import { PokemonTypeColorPipe } from '../../pipe/type-color/pokemon-type-color.pipe';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { routesName } from '../../../app-routing-config';
-import {
-  combineLatest,
-  concatMap,
-  debounceTime,
-  distinctUntilChanged,
-  from,
-  map,
-  Observable,
-  startWith,
-} from 'rxjs';
 import { Pokemon, PokemonRequest } from '@pokemon/domain';
 import {
   AddedPokemonController,
@@ -38,26 +25,38 @@ import { Builder } from 'builder-pattern';
 import { TypeFormEnum } from '../../model/enum/type-form.enum';
 import { TranslatePipe } from '../../pipe/translate/translate.pipe';
 import { typeFormEnumToken } from '../../tokens/type-form.token';
+import {
+  apply,
+  FieldTree,
+  form,
+  FormField,
+  submit,
+  validate,
+} from '@angular/forms/signals';
+import { createPokemonSchemaValidator } from '../../utils/validate-async.util';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-pokemon-form',
-  standalone: true,
   templateUrl: './pokemon-form.component.html',
   styleUrl: './pokemon-form.component.scss',
   imports: [
     LoaderComponent,
     PokemonTypeColorPipe,
-    ReactiveFormsModule,
     TranslatePipe,
+    FormField,
+    JsonPipe,
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PokemonFormComponent implements OnInit, AfterViewInit {
+export class PokemonFormComponent {
   pokemon: InputSignal<Pokemon> = input.required();
+  private pokemonSignal: WritableSignal<Pokemon> = linkedSignal(() =>
+    this.pokemon(),
+  );
 
   private readonly router: Router = inject(Router);
-  private readonly fb: FormBuilder = inject(FormBuilder);
   private readonly typeForm: TypeFormEnum = inject(typeFormEnumToken);
-  private readonly destroyRef: DestroyRef = inject(DestroyRef);
   private readonly dataShared: DataSharedService = inject(DataSharedService);
   private readonly addController: AddedPokemonController = inject(
     AddedPokemonController,
@@ -66,73 +65,39 @@ export class PokemonFormComponent implements OnInit, AfterViewInit {
     EditPokemonController,
   );
 
-  formGroup: FormGroup;
-  isAddForm: boolean;
-
-  types: WritableSignal<string[]> = signal(this.dataShared.pokemonTypes);
-  pokemonErrors: WritableSignal<PokemonErrors> = signal({
-    hpError: undefined,
-    cpError: undefined,
-    nameError: undefined,
-    pictureError: undefined,
-  });
-
-  formIsValid: Signal<boolean> = computed(() =>
-    Object.values(this.pokemonErrors()).every((error) => !error),
+  protected isAddForm: Signal<boolean> = computed(
+    () => this.typeForm === TypeFormEnum.CREATE,
   );
 
-  ngOnInit() {
-    this.isAddForm = this.typeForm === TypeFormEnum.CREATE;
+  protected types: WritableSignal<string[]> = signal(
+    this.dataShared.pokemonTypes,
+  );
 
-    this.formGroup = this.fb.group({
-      id: [this.pokemon()?.id],
-      hp: [this.pokemon()?.hp],
-      cp: [this.pokemon()?.cp],
-      name: [this.pokemon()?.name],
-      picture: [this.pokemon()?.picture],
-      types: [this.pokemon()?.types],
-      created: [this.pokemon()?.created],
-    });
-  }
+  protected form: FieldTree<Pokemon> = form(
+    this.pokemonSignal,
+    (pokemonSchema) => {
+      const controller: AddedPokemonController | EditPokemonController =
+        this.isAddForm() ? this.addController : this.editController;
 
-  ngAfterViewInit(): void {
-    const controller: AddedPokemonController | EditPokemonController = this
-      .isAddForm
-      ? this.addController
-      : this.editController;
-    this.formGroup.valueChanges
-      .pipe(
-        debounceTime(200),
-        distinctUntilChanged(),
-        concatMap((formValue: any) => {
-          return combineLatest([
-            from(controller.validateName(formValue.name)).pipe(
-              startWith(undefined),
-            ),
-            from(controller.validateHp(formValue.hp)).pipe(
-              startWith(undefined),
-            ),
-            from(controller.validateCp(formValue.cp)).pipe(
-              startWith(undefined),
-            ),
-            from(controller.validatePicture(formValue.picture)).pipe(
-              startWith(undefined),
-            ),
-          ]);
-        }),
-        map(
-          ([nameError, hpError, cpError, pictureError]: (
-            | string
-            | undefined
-          )[]) =>
-            ({ nameError, hpError, cpError, pictureError }) as PokemonErrors,
-        ),
-      )
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((pokemonErrors: PokemonErrors) =>
-        this.pokemonErrors.set(pokemonErrors),
-      );
-  }
+      apply(pokemonSchema, createPokemonSchemaValidator(controller));
+
+      validate(pokemonSchema.types, ({ value: types }) => {
+        if (types.length === 1) {
+          return {
+            kind: 'typesError',
+            message: 'At least one type must be selected',
+          };
+        }
+        if (types.length === 3) {
+          return {
+            kind: 'typesError',
+            message: 'No more than three types can be selected',
+          };
+        }
+        return null;
+      });
+    },
+  );
 
   /**
    * Cette méthode permet de cocher les types de pokemon présent dans la liste du pokémon courant.
@@ -140,7 +105,7 @@ export class PokemonFormComponent implements OnInit, AfterViewInit {
    * @return boolean
    */
   hasType(type: string): boolean {
-    const types: string[] = this.formGroup.get('types')?.value;
+    const types: string[] = this.form.types().value() || [];
     return types.includes(type);
   }
 
@@ -150,7 +115,7 @@ export class PokemonFormComponent implements OnInit, AfterViewInit {
    * @param type
    */
   selectType(isChecked: boolean, type: string): void {
-    let types: string[] = this.formGroup.get('types')?.value;
+    let types: string[] = this.form.types().value();
 
     if (isChecked) {
       types = [...types, type];
@@ -158,7 +123,7 @@ export class PokemonFormComponent implements OnInit, AfterViewInit {
       types = types.filter((currentType: string) => currentType !== type);
     }
 
-    this.formGroup.get('types')?.patchValue(types);
+    this.form().value.update((previous) => ({ ...previous, types }));
   }
 
   /**
@@ -167,7 +132,7 @@ export class PokemonFormComponent implements OnInit, AfterViewInit {
    * @returns boolean
    */
   isTypesValid(type: string): boolean {
-    const types: string[] = this.formGroup.get('types')?.value;
+    const types: string[] = this.form.types().value();
     if (types.length === 1 && this.hasType(type)) {
       return false;
     }
@@ -177,48 +142,44 @@ export class PokemonFormComponent implements OnInit, AfterViewInit {
   /**
    * Cette méthode ajoute ou édite un pokémon.
    */
-  onSubmit(): void {
-    let observable$: Observable<Pokemon>;
+  onSubmit($event: Event): void {
+    $event.preventDefault();
 
-    const pokemonRequest: PokemonRequest = Builder<PokemonRequest>()
-      .hp(this.formGroup.get('hp')?.value)
-      .cp(this.formGroup.get('cp')?.value)
-      .name(this.formGroup.get('name')?.value)
-      .picture(this.formGroup.get('picture')?.value)
-      .types(this.formGroup.get('types')?.value)
-      .created(this.formGroup.get('created')?.value)
-      .build();
-
-    if (this.isAddForm) {
-      observable$ = from(this.addController.create(pokemonRequest));
+    const errors = this.form().errorSummary();
+    if (errors.length > 0) {
+      errors[0].fieldTree().focusBoundControl();
     } else {
-      observable$ = from(
-        this.editController.update(this.pokemon().id, pokemonRequest),
-      );
+      submit(this.form, async () => {
+        const pokemonData: Pokemon = this.form().value();
+
+        const pokemonRequest: PokemonRequest = Builder<PokemonRequest>()
+          .hp(pokemonData.hp)
+          .cp(pokemonData.cp)
+          .name(pokemonData.name)
+          .picture(pokemonData.picture)
+          .types(pokemonData.types)
+          .created(pokemonData.created)
+          .build();
+
+        let pokemonResponse: Pokemon;
+        try {
+          if (this.isAddForm()) {
+            pokemonResponse = await this.addController.create(pokemonRequest);
+          } else {
+            pokemonResponse = await this.editController.update(
+              this.pokemon().id,
+              pokemonRequest,
+            );
+          }
+          await this.router.navigate([
+            routesName.pokemon.children.detail.fullPath,
+            pokemonResponse.id,
+          ]);
+          return null;
+        } catch (err) {
+          return [];
+        }
+      });
     }
-
-    observable$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
-      next: (pokemon: Pokemon) =>
-        this.router.navigate([
-          routesName.pokemon.children.detail.fullPath,
-          pokemon.id,
-        ]),
-      error: (errors: Map<string, string>) =>
-        this.pokemonErrors.set(
-          Builder<PokemonErrors>()
-            .hpError(errors.get('hp'))
-            .cpError(errors.get('cp'))
-            .nameError(errors.get('name'))
-            .pictureError(errors.get('picture'))
-            .build(),
-        ),
-    });
   }
-}
-
-interface PokemonErrors {
-  hpError: string | undefined;
-  cpError: string | undefined;
-  nameError: string | undefined;
-  pictureError: string | undefined;
 }

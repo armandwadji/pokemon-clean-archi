@@ -35,7 +35,7 @@ describe('PokemonFormComponent', () => {
     fixture = TestBed.createComponent(PokemonFormComponent);
     component = fixture.componentInstance;
     fixture.componentRef.setInput('pokemon', {} as Pokemon);
-    fixture.detectChanges();
+    // fixture.detectChanges();
   });
 
   it('should create', () => {

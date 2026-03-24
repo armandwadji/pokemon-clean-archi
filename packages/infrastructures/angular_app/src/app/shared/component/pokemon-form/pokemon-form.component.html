@@ -1,12 +1,10 @@
 @if (pokemon()) {
-  <form
-    [formGroup]="formGroup"
-    (ngSubmit)="onSubmit(); $event.preventDefault()"
-  >
+  <form (submit)="onSubmit($event)">
     <div class="row">
       <div class="col s8 offset-s2">
         <div class="card-panel">
           <!-- Pokemon name -->
+          @let nameFieldState = form.name();
           <div class="form-group">
             <label for="name">{{ "details.name" | translate }}</label>
             <input
@@ -14,36 +12,38 @@
               class="form-control"
               id="name"
               autocomplete="false"
-              formControlName="name"
+              [formField]="form.name"
             />
-            @if (pokemonErrors().nameError) {
+            @for (error of nameFieldState.errors(); track error.kind) {
               <div class="card-panel red accent-1">
-                {{ pokemonErrors().nameError }}
+                {{ error.message }}
               </div>
             }
           </div>
 
           <!-- Pokemon Picture -->
-          @if (isAddForm) {
+          @let pictureFieldState = form.picture();
+          @if (isAddForm()) {
             <div class="form-group">
-              <label for="picture">Nom</label>
+              <label for="picture">Image</label>
               <input
                 type="url"
                 class="form-control"
                 id="picture"
                 autocomplete="false"
-                formControlName="picture"
+                [formField]="form.picture"
               />
-              @if (pokemonErrors().pictureError) {
+              @for (error of pictureFieldState.errors(); track error.kind) {
                 <div
                   class="card-panel red accent-1"
-                  [innerHTML]="pokemonErrors().pictureError"
+                  [innerHTML]="error.message"
                 ></div>
               }
             </div>
           }
 
           <!-- Pokemon hp -->
+          @let hpFieldState = form.hp();
           <div class="form-group">
             <label for="hp">{{ "details.hp" | translate }}</label>
             <input
@@ -51,16 +51,18 @@
               class="form-control"
               id="hp"
               autocomplete="false"
-              formControlName="hp"
+              [formField]="form.hp"
             />
-            @if (pokemonErrors().hpError) {
+
+            @for (error of hpFieldState.errors(); track error.kind) {
               <div class="card-panel red accent-1">
-                {{ pokemonErrors().hpError }}
+                {{ error.message }}
               </div>
             }
           </div>
 
           <!-- Pokemon cp -->
+          @let cpFieldState = form.cp();
           <div class="form-group">
             <label for="cp">{{ "details.cp" | translate }}</label>
             <input
@@ -68,11 +70,11 @@
               class="form-control"
               id="cp"
               autocomplete="false"
-              formControlName="cp"
+              [formField]="form.cp"
             />
-            @if (pokemonErrors().cpError) {
+            @for (error of cpFieldState.errors(); track error.kind) {
               <div class="card-panel red accent-1">
-                {{ pokemonErrors().cpError }}
+                {{ error.message }}
               </div>
             }
           </div>
@@ -100,16 +102,13 @@
                 </label>
               </p>
             }
+            <div>{{ form().errorSummary() | json }}</div>
           </form>
 
           <!-- Submit button -->
           <div class="divider"></div>
           <div class="section center">
-            <button
-              type="submit"
-              [disabled]="!formIsValid()"
-              class="waves-effect waves-light btn"
-            >
+            <button type="submit" class="waves-effect waves-light btn">
               {{ "details.validateBtn" | translate }}
             </button>
           </div>
